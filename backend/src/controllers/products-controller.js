@@ -3,6 +3,7 @@ import HttpError from '../utils/httpError';
 
 export default {
   findAll(req, res, next) {
+    // branch demo
     productsService
       .findAll()
       .then((products) => {
