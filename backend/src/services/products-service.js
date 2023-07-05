@@ -2,7 +2,7 @@ import productsModel from '../database/models/products-model';
 
 export default {
   findAll() {
-    return productsModel.getAll(); // most csináltam
+    return productsModel.getAll();
   },
 
   create(payload) {
