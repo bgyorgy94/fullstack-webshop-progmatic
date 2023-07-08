@@ -6,7 +6,7 @@ export default {
       CREATE TABLE IF NOT EXISTS categories (
         id INTEGER PRIMARY KEY,
         name TEXT NOT NULL UNIQUE
-      ) STRICT;
+      )
     `;
     db.run(sql, (err) => {
       if (err) {
