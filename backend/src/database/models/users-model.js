@@ -7,7 +7,7 @@ export default {
             id TEXT PRIMARY KEY,
             email TEXT UNIQUE,
             password_hash TEXT,
-            is_admin BOOLEAN
+            is_admin BOOLEAN DEFAULT false
         )`;
     db.run(sql, (err) => {
       if (err) {
