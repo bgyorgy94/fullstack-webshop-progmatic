@@ -6,8 +6,6 @@ export default {
     try {
       const { name } = req.body;
       if (!name) throw new HttpError('missing required parameter', 400);
-      if (name.length < 3 || name.length > 30)
-        throw new HttpError('name must be between 3 and 30 characters', 400);
       const category = await categoriesService.create(name);
       res.status(201).send(category);
     } catch (error) {
@@ -19,7 +17,7 @@ export default {
       const { id } = req.params;
       if (!id) throw new HttpError('missing required parameter', 400);
       await categoriesService.delete(id);
-      res.status(200).send();
+      res.status(204).send();
     } catch (error) {
       next(error);
     }
@@ -29,8 +27,6 @@ export default {
       const { id } = req.params;
       const { name } = req.body;
       if (!name || !id) throw new HttpError('missing required parameter', 400);
-      if (name.length < 3 || name.length > 30)
-        throw new HttpError('name must be between 3 and 30 characters', 400);
       const category = await categoriesService.update(id, name);
       res.status(201).send(category);
     } catch (error) {

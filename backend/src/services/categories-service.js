@@ -1,44 +1,19 @@
 import categoriesModel from '../database/models/categories-model';
 
 export default {
-  async create(name) {
-    try {
-      // unique name validation
-      const existingCategory = await categoriesModel.getByName(name);
-      if (existingCategory) {
-        throw new Error('Category name already exists');
-      }
-      return await categoriesModel.create({ name });
-    } catch (error) {
-      throw error;
-    }
+  create(name) {
+    return categoriesModel.create({ name });
   },
-  async delete(id) {
-    try {
-      await categoriesModel.delete(id);
-    } catch (error) {
-      throw error;
-    }
+  delete(id) {
+    return categoriesModel.delete(id);
   },
-  async update(id, name) {
-    try {
-      return await categoriesModel.update(id, name);
-    } catch (error) {
-      throw error;
-    }
+  update(id, name) {
+    return categoriesModel.update(id, name);
   },
-  async findAll() {
-    try {
-      return await categoriesModel.getAll();
-    } catch (error) {
-      throw error;
-    }
+  findAll() {
+    return categoriesModel.getAll();
   },
-  async findById(id) {
-    try {
-      return await categoriesModel.getById(id);
-    } catch (error) {
-      throw error;
-    }
+  findById(id) {
+    return categoriesModel.getById(id);
   },
 };
