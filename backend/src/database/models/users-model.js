@@ -5,7 +5,7 @@ export default {
   createTable() {
     const sql = `CREATE TABLE IF NOT EXISTS users (
             id TEXT PRIMARY KEY,
-            email TEXT,
+            email TEXT UNIQUE,
             password_hash TEXT,
             is_admin BOOLEAN
         )`;

@@ -1,4 +1,4 @@
-import authService from '../services/auth_service';
+import authService from '../services/auth-service';
 
 export default {
   register(req, res, next) {
@@ -6,7 +6,7 @@ export default {
     authService
       .register({ email, password })
       .then(() => {
-        res.send('Sikeres regisztráció!');
+        res.json({ message: 'Sikeres regisztráció!' });
       })
       .catch((err) => next(err));
   },

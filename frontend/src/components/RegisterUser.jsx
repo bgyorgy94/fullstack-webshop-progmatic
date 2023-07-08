@@ -33,9 +33,6 @@ export default function RegisterUser() {
 
   function register(e) {
     e.preventDefault();
-    userService
-      .register(formData)
-      .then((response) => response.text())
-      .then((text) => setMessage(text));
+    userService.register(formData).then((resp) => setMessage(resp.data.message));
   }
 }
