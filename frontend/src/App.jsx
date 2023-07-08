@@ -1,29 +1,21 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import './App.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import RegisterUser from './components/RegisterUser';
 import Home from './components/Home';
+import './App.css';
 
 const router = createBrowserRouter([
   {
     path: '/register',
-    element: <RegisterUser />
+    element: <RegisterUser />,
   },
   {
     path: '/',
-    element: <Home />
-  }
+    element: <Home />,
+  },
 ]);
 
 function App() {
-
-
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
