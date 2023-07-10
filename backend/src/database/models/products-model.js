@@ -1,5 +1,3 @@
-import { reject } from 'bcrypt/promises';
-import { resolve } from 'path';
 import db from '../connection';
 
 export default {
@@ -58,7 +56,7 @@ export default {
     return new Promise((resolve, reject) => {
       db.run(sql, params, function (err) {
         if (err) reject(err);
-        else resolve({ title, price, id: this.lastID });
+        else resolve({ id: this.lastID, title, price, description, categoryId });
       });
     });
   },
