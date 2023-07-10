@@ -10,4 +10,14 @@ export default {
       })
       .catch((err) => next(err));
   },
+
+  login(req, res, next) {
+    const { email, password } = req.body;
+    authService
+      .login({ email, password })
+      .then(({ accessToken }) => {
+        res.send({ accessToken });
+      })
+      .catch((err) => next(err));
+  },
 };
