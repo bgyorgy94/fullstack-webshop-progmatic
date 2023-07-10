@@ -21,7 +21,7 @@ export default {
   },
 
   getAll() {
-    const sql = 'SELECT * FROM products';
+    const sql = `SELECT p.title, p.price, p.description, c.name as category FROM products p JOIN categories c ON p.category_id = c.id`;
     return new Promise((resolve, reject) => {
       db.all(sql, (err, rows) => {
         if (err) reject(err);
