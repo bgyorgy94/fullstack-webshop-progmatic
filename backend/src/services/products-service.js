@@ -5,7 +5,19 @@ export default {
     return productsModel.getAll();
   },
 
+  find(payload) {
+    return productsModel.get(payload);
+  },
+
   create(payload) {
     return productsModel.create(payload);
+  },
+
+  udpate(payload) {
+    return productsModel.update(payload);
+  },
+
+  delete(payload) {
+    return productsModel.delete(payload);
   },
 };
