@@ -1,3 +1,5 @@
+import { reject } from 'bcrypt/promises';
+import { resolve } from 'path';
 import db from '../connection';
 
 export default {
@@ -57,6 +59,24 @@ export default {
       db.run(sql, params, function (err) {
         if (err) reject(err);
         else resolve({ title, price, id: this.lastID });
+      });
+    });
+  },
+
+  update({ id, title, price, description, categoryId }) {
+    const sql = `UPDATE products SET title = $title, price = $price, description = $description, category_id = $categoryId WHERE id = $id`;
+    const params = {
+      $id: id,
+      $title: title,
+      $price: price,
+      $description: description,
+      $categoryId: categoryId,
+    };
+
+    return new Promise((resolve, reject) => {
+      db.run(sql, params, (err) => {
+        if (err) reject(err);
+        else resolve({ id, title, price, description, categoryId });
       });
     });
   },

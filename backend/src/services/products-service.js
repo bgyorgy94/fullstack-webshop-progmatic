@@ -13,6 +13,10 @@ export default {
     return productsModel.create(payload);
   },
 
+  udpate(payload) {
+    return productsModel.update(payload);
+  },
+
   delete(payload) {
     return productsModel.delete(payload);
   },

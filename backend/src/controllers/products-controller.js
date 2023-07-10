@@ -31,6 +31,15 @@ export default {
       .catch(next);
   },
 
+  update(req, res, next) {
+    const { id } = req.params;
+    const { title, price, description, categoryId } = req.body;
+    productsService
+      .udpate({ id, title, price: Number(price), description, categoryId })
+      .then((product) => res.status(201).send(product))
+      .catch(next);
+  },
+
   delete(req, res, next) {
     const { id } = req.params;
     productsService
