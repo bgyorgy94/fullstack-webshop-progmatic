@@ -9,6 +9,11 @@ export default function RegisterUser() {
   });
   const [message, setMessage] = useState('');
 
+  function register(e) {
+    e.preventDefault();
+    userService.register(formData).then((resp) => setMessage(resp.data.message));
+  }
+
   return (
     <>
       <div>
@@ -36,9 +41,4 @@ export default function RegisterUser() {
       </div>
     </>
   );
-
-  function register(e) {
-    e.preventDefault();
-    userService.register(formData).then((resp) => setMessage(resp.data.message));
-  }
 }

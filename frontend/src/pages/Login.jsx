@@ -1,8 +1,6 @@
-import { useContext, useState } from 'react';
-import jwt_decode from 'jwt-decode';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import userService from '../services/user-service';
-import { UserContext } from '../contexts/UserContext';
+import useLogin from '../hooks/useLogin';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -10,7 +8,12 @@ export default function Login() {
     password: '',
   });
 
-  const [user, setUser] = useContext(UserContext);
+  const {login} = useLogin();
+  
+  function clickLogin(e) {
+    e.preventDefault();
+    login(formData);
+  };
 
   return (
     <>
@@ -18,7 +21,7 @@ export default function Login() {
         <Link to="/">Kezdőoldal</Link>
       </div>
       <div>
-        <form>
+        <form onSubmit={clickLogin}>
           <input
             type="text"
             placeholder="E-mail cím"
@@ -31,19 +34,11 @@ export default function Login() {
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
           />
-          <button type="submit" onClick={login}>
+          <button type="submit">
             Bejelentkezés
           </button>
         </form>
       </div>
     </>
   );
-
-  function login(e) {
-    e.preventDefault();
-    userService.login(formData).then((resp) => {
-      const decoded = jwt_decode(resp.data.accessToken);
-      setUser(decoded);
-    });
-  }
 }
