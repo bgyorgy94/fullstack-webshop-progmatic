@@ -8,12 +8,12 @@ export default function Login() {
     password: '',
   });
 
-  const {login} = useLogin();
-  
+  const { login } = useLogin();
+
   function clickLogin(e) {
     e.preventDefault();
     login(formData);
-  };
+  }
 
   return (
     <>
@@ -34,9 +34,7 @@ export default function Login() {
             value={formData.password}
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
           />
-          <button type="submit">
-            Bejelentkezés
-          </button>
+          <button type="submit">Bejelentkezés</button>
         </form>
       </div>
     </>
