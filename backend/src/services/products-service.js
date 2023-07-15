@@ -13,7 +13,7 @@ export default {
     return productsModel.create(payload);
   },
 
-  udpate(payload) {
+  update(payload) {
     return productsModel.update(payload);
   },
 
