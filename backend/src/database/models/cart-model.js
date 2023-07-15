@@ -30,5 +30,24 @@ export default {
                 else resolve({ productId });
             });
         });
+    },
+
+    getAll({ userId }) {
+        const sql = `SELECT p.title, p.price, count(*) quantity, sum(price) subtotal
+            FROM products p
+            JOIN carts c
+            ON p.id = c.product_id
+            WHERE c.user_id = $user_id
+            GROUP BY p.title`;
+        
+        const params = { $user_id: userId};
+
+        return new Promise((resolve, reject) => {
+            db.all(sql, params, (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+
     }
 }
