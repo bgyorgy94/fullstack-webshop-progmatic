@@ -3,6 +3,8 @@ import RegisterUser from './components/RegisterUser';
 import Home from './components/Home';
 import Categories from './pages/Categories';
 import Category from './components/Category';
+import RegisterUser from './pages/RegisterUser';
+import Home from './pages/Home';
 import './App.css';
 import Login from './pages/Login';
 import { UserProvider } from './contexts/UserContext';
