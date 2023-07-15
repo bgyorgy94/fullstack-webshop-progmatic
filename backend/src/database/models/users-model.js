@@ -45,4 +45,19 @@ export default {
       });
     });
   },
+
+  getAll() {
+    const sql = 'SELECT * FROM users';
+
+    return new Promise((resolve, reject) => {
+      db.all(sql, (err, rows) => {
+        if (err) reject(err);
+        else {
+          resolve(rows.map(row => (
+            {id: row.id, email: row.email, isAdmin: row.is_admin}
+          )))
+        }
+      })
+    })
+  }
 };
