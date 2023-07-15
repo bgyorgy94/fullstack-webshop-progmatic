@@ -1,7 +1,7 @@
-import usersModel from '../database/models/users-model'
+import usersModel from '../database/models/users-model';
 
 export default {
-    getAll() {
-        return usersModel.getAll();
-    }
-}
+  getAll() {
+    return usersModel.getAll();
+  },
+};

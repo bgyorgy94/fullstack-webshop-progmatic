@@ -1,15 +1,15 @@
 import cartModel from '../database/models/cart-model';
 
 export default {
-    add(payload) {
-        return cartModel.create(payload);
-    },
+  add(payload) {
+    return cartModel.create(payload);
+  },
 
-    getAll(payload) {
-        return cartModel.getAll(payload);
-    },
+  getAll(payload) {
+    return cartModel.getAll(payload);
+  },
 
-    delete(payload) {
-        return cartModel.delete(payload);
-    }
-}
+  delete(payload) {
+    return cartModel.delete(payload);
+  },
+};
