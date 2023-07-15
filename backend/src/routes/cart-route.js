@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post('/', userVerify, cartController.add);
 router.get('/', userVerify, cartController.getAll);
+router.delete('/:id', userVerify, cartController.delete);
 
 export default router;

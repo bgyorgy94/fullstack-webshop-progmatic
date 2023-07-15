@@ -19,5 +19,13 @@ export default {
                 "total": cartItems.map(item => (item.subtotal)).reduce((acc, curr) => acc + curr, 0)
             })
         })
+    },
+
+    delete(req, res, next) {
+        const userId = req.user.id;
+        const productId  = req.params.id;
+        cartService
+        .delete({ productId, userId })
+        .then(deletedProduct => res.send(deletedProduct))
     }
 }

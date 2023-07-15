@@ -5,7 +5,6 @@ export default {
         const sql = `CREATE TABLE IF NOT EXISTS carts (
             product_id INTEGER,
             user_id TEXT,
-            is_ordered BOOLEAN DEFAULT false,
             FOREIGN KEY (product_id) REFERENCES products(id),
             FOREIGN KEY (user_id) REFERENCES users(id)
         )`;
@@ -18,11 +17,11 @@ export default {
         });
     },
 
-    create({ productId, userId, isOrdered = false }) {
-        const sql = `INSERT INTO carts (product_id, user_id, is_ordered)
-            VALUES ($product_id, $user_id, $is_ordered)`;
+    create({ productId, userId }) {
+        const sql = `INSERT INTO carts (product_id, user_id)
+            VALUES ($product_id, $user_id)`;
         
-        const params = { $product_id: productId, $user_id: userId, $is_ordered: isOrdered};
+        const params = { $product_id: productId, $user_id: userId};
 
         return new Promise((resolve, reject) => {
             db.run(sql, params, (err) => {
@@ -49,5 +48,23 @@ export default {
             });
         });
 
+    },
+
+    delete({ productId, userId }) {
+        const sql = `DELETE FROM carts
+            WHERE rowid = (
+                SELECT MIN(rowid)
+                FROM carts
+                WHERE user_id = $user_id
+                AND product_id = $product_id)`;
+
+        const params = { $user_id: userId, $product_id: productId};
+
+        return new Promise((resolve, reject) => {
+            db.run(sql, params, (err) => {
+                if (err) reject(err);
+                else resolve({productId})
+            });
+        });
     }
 }

@@ -7,5 +7,9 @@ export default {
 
     getAll(payload) {
         return cartModel.getAll(payload);
+    },
+
+    delete(payload) {
+        return cartModel.delete(payload);
     }
 }
