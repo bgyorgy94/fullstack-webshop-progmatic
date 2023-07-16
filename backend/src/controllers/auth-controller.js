@@ -1,23 +1,23 @@
 import authService from '../services/auth-service';
 
 export default {
-  register(req, res, next) {
+  async register(req, res, next) {
     const { email, password } = req.body;
-    authService
-      .register({ email, password })
-      .then(() => {
-        res.json({ message: 'Sikeres regisztráció!' });
-      })
-      .catch((err) => next(err));
+    try {
+      const user = await authService.register({ email, password });
+      res.status(201).send(user);
+    } catch (error) {
+      next(error);
+    }
   },
 
-  login(req, res, next) {
+  async login(req, res, next) {
     const { email, password } = req.body;
-    authService
-      .login({ email, password })
-      .then(({ accessToken }) => {
-        res.send({ accessToken });
-      })
-      .catch((err) => next(err));
+    try {
+      const user = await authService.login({ email, password });
+      res.status(200).send(user);
+    } catch (error) {
+      next(error);
+    }
   },
 };
