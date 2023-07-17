@@ -1,6 +1,4 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import RegisterUser from './components/RegisterUser';
-import Home from './components/Home';
 import Categories from './pages/Categories';
 import Category from './components/Category';
 import RegisterUser from './pages/RegisterUser';
@@ -10,6 +8,8 @@ import Login from './pages/Login';
 import { UserProvider } from './contexts/UserContext';
 import UserList from './pages/UserList';
 import Admin from './pages/Admin';
+import { CartProvider } from './contexts/CartContext';
+import Cart from './pages/Cart';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +30,10 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
+    path: '/cart',
+    element: <Cart />
+  },
+  {
     path: '/admin',
     element: <Admin />,
     children: [
@@ -44,7 +48,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <UserProvider>
-      <RouterProvider router={router} />
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
     </UserProvider>
   );
 }
