@@ -73,7 +73,7 @@ export default {
       });
     });
   },
-  // deleting a specific user's order based on the orderId and the user's userId
+
   delete({ userId, orderId }) {
     const sql = `
     DELETE FROM orders

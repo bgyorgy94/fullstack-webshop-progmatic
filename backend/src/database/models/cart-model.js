@@ -32,7 +32,7 @@ export default {
   },
 
   getAll({ userId }) {
-    const sql = `SELECT p.title, p.price, count(*) quantity, sum(price) subtotal
+    const sql = `SELECT p.id, p.title, p.price, count(*) quantity, sum(price) subtotal
             FROM products p
             JOIN carts c
             ON p.id = c.product_id
