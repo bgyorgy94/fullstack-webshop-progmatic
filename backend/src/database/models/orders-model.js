@@ -2,6 +2,7 @@ import db from '../connection';
 
 export default {
   createTable() {
+    // ezeket at kell irni hogy a carttal egyutt mukodjon
     const sql = `CREATE TABLE IF NOT EXISTS orders (
             product_id INTEGER,
             user_id TEXT,
@@ -32,12 +33,12 @@ export default {
   },
 
   getAll({ userId }) {
-    const sql = `SELECT p.title, p.price, count(*) quantity, sum(price) subtotal
+    const sql = `SELECT o.id, p.title, p.price, count(*) quantity, sum(p.price) subtotal
             FROM products p
             JOIN orders o
             ON p.id = o.product_id
             WHERE o.user_id = $user_id
-            GROUP BY p.title`;
+            GROUP BY o.id, p.title`;
 
     const params = { $user_id: userId };
 
@@ -48,7 +49,24 @@ export default {
       });
     });
   },
+  getById({ productId, userId }) {
+    const sql = `SELECT p.title, p.price, count(*) quantity, sum(price) subtotal
+            FROM products p
+            JOIN orders o
+            ON p.id = o.product_id
+            WHERE o.user_id = $user_id
+            AND o.product_id = $product_id
+            GROUP BY p.title`;
 
+    const params = { $user_id: userId, $product_id: productId };
+
+    return new Promise((resolve, reject) => {
+      db.get(sql, params, (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
+      });
+    });
+  },
   delete({ productId, userId }) {
     const sql = `DELETE FROM orders
             WHERE rowid = (
