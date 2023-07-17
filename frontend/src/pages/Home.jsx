@@ -17,7 +17,7 @@ export default function Home() {
       <Link to="/login">Bejelentkezés</Link>
       <br />
       <br />
-      <Link to='/admin'>Admin oldal</Link>
+      <Link to="/admin">Admin oldal</Link>
     </>
   );
 }
