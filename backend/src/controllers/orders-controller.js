@@ -5,29 +5,36 @@ export default {
     const { userId } = req.params;
     try {
       const orders = await ordersService.findAll(userId);
-      res.send(orders);
-    } catch (error) {
-      next(error);
+      res.send({ orders });
+    } catch (err) {
+      next(err);
+    }
+  },
+  async find(req, res, next) {
+    const { userId, orderId } = req.params;
+    try {
+      const order = await ordersService.find(userId, orderId);
+      res.send(order);
+    } catch (err) {
+      next(err);
     }
   },
   async create(req, res, next) {
-    const { productId } = req.body;
     const { userId } = req.params;
     try {
-      const order = await ordersService.create(productId, userId);
+      const order = await ordersService.create(userId);
       res.status(201).send(order);
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      next(err);
     }
   },
   async delete(req, res, next) {
-    const { productId } = req.body;
-    const { userId } = req.params;
+    const { userId, orderId } = req.params;
     try {
-      const order = await ordersService.delete(productId, userId);
+      const order = await ordersService.delete(userId, orderId);
       res.status(200).send(order);
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      next(err);
     }
   },
 };

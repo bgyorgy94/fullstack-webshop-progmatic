@@ -2,44 +2,47 @@ import db from '../connection';
 
 export default {
   createTable() {
-    // ezeket at kell irni hogy a carttal egyutt mukodjon
-    const sql = `CREATE TABLE IF NOT EXISTS orders (
-            product_id INTEGER,
-            user_id TEXT,
-            FOREIGN KEY (product_id) REFERENCES products(id),
-            FOREIGN KEY (user_id) REFERENCES users(id)
-        )`;
-
+    const sql = `
+    CREATE TABLE IF NOT EXISTS orders (
+      id INTEGER PRIMARY KEY,
+      user_id INTEGER,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    )
+  `;
     db.run(sql, (err) => {
       if (err) {
-        console.log('Orders table creation error:', err.message);
+        console.log(`Orders table creation error: ${err.message}`);
         throw err;
       }
     });
   },
 
-  create({ productId, userId }) {
-    const sql = `INSERT INTO orders (product_id, user_id)
-            VALUES ($product_id, $user_id)`;
-
-    const params = { $product_id: productId, $user_id: userId };
+  create({ userId }) {
+    const sql = `
+    INSERT INTO orders (user_id)
+    VALUES ($user_id)
+  `;
+    const params = { $user_id: userId };
 
     return new Promise((resolve, reject) => {
-      db.run(sql, params, (err) => {
+      db.run(sql, params, function (err) {
         if (err) reject(err);
-        else resolve({ productId });
+        else resolve({ orderId: this.lastID });
       });
     });
   },
 
   getAll({ userId }) {
-    const sql = `SELECT o.id, p.title, p.price, count(*) quantity, sum(p.price) subtotal
-            FROM products p
-            JOIN orders o
-            ON p.id = o.product_id
-            WHERE o.user_id = $user_id
-            GROUP BY o.id, p.title`;
-
+    const sql = `
+    SELECT o.id, o.user_id, p.title, p.price, count(*) quantity, sum(price) subtotal
+    FROM products p
+    JOIN carts c
+    ON p.id = c.product_id
+    JOIN orders o
+    ON c.user_id = o.user_id
+    WHERE o.user_id = $user_id
+    GROUP BY o.id, p.title
+  `;
     const params = { $user_id: userId };
 
     return new Promise((resolve, reject) => {
@@ -49,38 +52,39 @@ export default {
       });
     });
   },
-  getById({ productId, userId }) {
-    const sql = `SELECT p.title, p.price, count(*) quantity, sum(price) subtotal
-            FROM products p
-            JOIN orders o
-            ON p.id = o.product_id
-            WHERE o.user_id = $user_id
-            AND o.product_id = $product_id
-            GROUP BY p.title`;
 
-    const params = { $user_id: userId, $product_id: productId };
+  getById({ userId, orderId }) {
+    const sql = `
+    SELECT o.id, o.user_id, p.title, p.price, count(*) quantity, sum(price) subtotal
+    FROM products p
+    JOIN carts c
+    ON p.id = c.product_id
+    JOIN orders o
+    ON c.user_id = o.user_id
+    WHERE o.id = $id AND o.user_id = $user_id
+    GROUP BY o.id, p.title
+  `;
+    const params = { $user_id: userId, $id: orderId };
 
     return new Promise((resolve, reject) => {
-      db.get(sql, params, (err, row) => {
+      db.all(sql, params, (err, rows) => {
         if (err) reject(err);
-        else resolve(row);
+        else resolve(rows);
       });
     });
   },
-  delete({ productId, userId }) {
-    const sql = `DELETE FROM orders
-            WHERE rowid = (
-                SELECT MIN(rowid)
-                FROM orders
-                WHERE user_id = $user_id
-                AND product_id = $product_id)`;
-
-    const params = { $user_id: userId, $product_id: productId };
+  // deleting a specific user's order based on the orderId and the user's userId
+  delete({ userId, orderId }) {
+    const sql = `
+    DELETE FROM orders
+    WHERE id = $id AND user_id = $user_id
+  `;
+    const params = { $id: orderId, $user_id: userId };
 
     return new Promise((resolve, reject) => {
       db.run(sql, params, (err) => {
         if (err) reject(err);
-        else resolve({ productId });
+        else resolve({ orderId });
       });
     });
   },

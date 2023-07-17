@@ -4,10 +4,13 @@ export default {
   findAll(userId) {
     return ordersModel.getAll(userId);
   },
-  create(productId, userId) {
-    return ordersModel.create(productId, userId);
+  find(userId, orderId) {
+    return ordersModel.getById(userId, orderId);
   },
-  delete(productId, userId) {
-    return ordersModel.delete(productId, userId);
+  create(userId) {
+    return ordersModel.create(userId);
+  },
+  delete(userId, orderId) {
+    return ordersModel.delete(userId, orderId);
   },
 };
