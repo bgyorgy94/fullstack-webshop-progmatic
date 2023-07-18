@@ -4,7 +4,7 @@ export default {
   createTable() {
     const sql = `
     CREATE TABLE IF NOT EXISTS orders (
-      id INTEGER PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER,
       FOREIGN KEY (user_id) REFERENCES users(id)
     )
@@ -34,12 +34,12 @@ export default {
 
   getAll({ userId }) {
     const sql = `
-    SELECT o.id, o.user_id, p.title, p.price, count(*) quantity, sum(price) subtotal
-    FROM products p
+    SELECT o.id, o.user_id, p.title, p.price, c.quantity, c.subtotal
+    FROM orders o
     JOIN carts c
-    ON p.id = c.product_id
-    JOIN orders o
-    ON c.user_id = o.user_id
+    ON o.user_id = c.user_id
+    JOIN products p
+    ON c.product_id = p.id
     WHERE o.user_id = $user_id
     GROUP BY o.id, p.title
   `;
@@ -55,12 +55,12 @@ export default {
 
   getById({ userId, orderId }) {
     const sql = `
-    SELECT o.id, o.user_id, p.title, p.price, count(*) quantity, sum(price) subtotal
-    FROM products p
+    SELECT o.id, o.user_id, p.title, p.price, c.quantity, c.subtotal
+    FROM orders o
     JOIN carts c
-    ON p.id = c.product_id
-    JOIN orders o
-    ON c.user_id = o.user_id
+    ON o.user_id = c.user_id
+    JOIN products p
+    ON c.product_id = p.id
     WHERE o.id = $id AND o.user_id = $user_id
     GROUP BY o.id, p.title
   `;

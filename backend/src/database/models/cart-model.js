@@ -5,6 +5,8 @@ export default {
     const sql = `CREATE TABLE IF NOT EXISTS carts (
             product_id INTEGER,
             user_id TEXT,
+            quantity INTEGER DEFAULT 1,
+            subtotal INTEGER,
             FOREIGN KEY (product_id) REFERENCES products(id),
             FOREIGN KEY (user_id) REFERENCES users(id)
         )`;
@@ -63,6 +65,20 @@ export default {
       db.run(sql, params, (err) => {
         if (err) reject(err);
         else resolve({ productId });
+      });
+    });
+  },
+  // clearing the cart's content after the order is created
+  clearCart({ userId }) {
+    const sql = `DELETE FROM carts
+            WHERE user_id = $user_id`;
+
+    const params = { $user_id: userId };
+
+    return new Promise((resolve, reject) => {
+      db.run(sql, params, (err) => {
+        if (err) reject(err);
+        else resolve({ userId });
       });
     });
   },

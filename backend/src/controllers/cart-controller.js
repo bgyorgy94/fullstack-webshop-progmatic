@@ -1,25 +1,38 @@
 import cartService from '../services/cart-service';
 
 export default {
-  add(req, res, next) {
+  async add(req, res, next) {
     const { productId } = req.body;
     const userId = req.user.id;
-    cartService.add({ productId, userId }).then((addedProduct) => res.send(addedProduct));
+    try {
+      const addedProduct = await cartService.add({ productId, userId });
+      res.send(addedProduct);
+    } catch (err) {
+      next(err);
+    }
   },
 
-  getAll(req, res, next) {
+  async getAll(req, res, next) {
     const userId = req.user.id;
-    cartService.getAll({ userId }).then((cartItems) => {
+    try {
+      const cartItems = await cartService.getAll({ userId });
       res.send({
         items: cartItems,
         total: cartItems.map((item) => item.subtotal).reduce((acc, curr) => acc + curr, 0),
       });
-    });
+    } catch (err) {
+      next(err);
+    }
   },
 
-  delete(req, res, next) {
+  async delete(req, res, next) {
     const userId = req.user.id;
     const productId = req.params.id;
-    cartService.delete({ productId, userId }).then((deletedProduct) => res.send(deletedProduct));
+    try {
+      const deletedProduct = await cartService.delete({ productId, userId });
+      res.send(deletedProduct);
+    } catch (err) {
+      next(err);
+    }
   },
 };
