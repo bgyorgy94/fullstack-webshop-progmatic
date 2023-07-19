@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import useOrders from '../hooks/useOrders';
 
 export default function UserOrder() {

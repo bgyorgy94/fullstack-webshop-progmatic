@@ -27,7 +27,7 @@ export default {
     const { id } = req.body;
     try {
       const order = await userOrdersService.create({ userId: id });
-      await cartService.clearCart({ userId }); // Clear the cart for the user
+      await cartService.clearCart({ userId: id }); // Clear the cart for the user
       res.status(201).send(order);
     } catch (err) {
       next(err);
