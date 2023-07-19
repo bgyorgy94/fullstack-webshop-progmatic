@@ -3,8 +3,10 @@ import db from '../connection';
 export default {
   createTable() {
     const sql = `CREATE TABLE IF NOT EXISTS carts (
+            id INTEGER PRIMARY KEY,
             product_id INTEGER,
             user_id TEXT,
+            quantity INTEGER,
             FOREIGN KEY (product_id) REFERENCES products(id),
             FOREIGN KEY (user_id) REFERENCES users(id)
         )`;
@@ -17,9 +19,25 @@ export default {
     });
   },
 
-  create({ productId, userId }) {
-    const sql = `INSERT INTO carts (product_id, user_id)
-            VALUES ($product_id, $user_id)`;
+  create({ productId, userId, quantity = 1 }) {
+    const sql = `INSERT INTO carts (product_id, user_id, quantity)
+            VALUES ($product_id, $user_id, $quantity)`;
+
+    const params = { $product_id: productId, $user_id: userId, $quantity: quantity };
+
+    return new Promise((resolve, reject) => {
+      db.run(sql, params, (err) => {
+        if (err) reject(err);
+        else resolve({ productId });
+      });
+    });
+  },
+
+  add({ productId, userId }) {
+    const sql = `UPDATE carts
+          SET quantity = quantity + 1
+          WHERE user_id = $user_id
+          AND product_id = $product_id`;
 
     const params = { $product_id: productId, $user_id: userId };
 
@@ -31,8 +49,24 @@ export default {
     });
   },
 
+  getItem({ productId, userId }) {
+    const sql = `SELECT *
+          FROM carts
+          WHERE product_id = $product_id
+          AND user_id = $user_id`;
+
+    const params = { $product_id: productId, $user_id: userId };
+
+    return new Promise((resolve, reject) => {
+      db.get(sql, params, (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
+      });
+    });
+  },
+
   getAll({ userId }) {
-    const sql = `SELECT p.id, p.title, p.price, count(*) quantity, sum(price) subtotal
+    const sql = `SELECT p.id, p.title, p.price, c.quantity, p.price * c.quantity AS subtotal
             FROM products p
             JOIN carts c
             ON p.id = c.product_id
@@ -51,13 +85,26 @@ export default {
 
   delete({ productId, userId }) {
     const sql = `DELETE FROM carts
-            WHERE rowid = (
-                SELECT MIN(rowid)
-                FROM carts
                 WHERE user_id = $user_id
-                AND product_id = $product_id)`;
+                AND product_id = $product_id`;
 
     const params = { $user_id: userId, $product_id: productId };
+
+    return new Promise((resolve, reject) => {
+      db.run(sql, params, (err) => {
+        if (err) reject(err);
+        else resolve({ productId });
+      });
+    });
+  },
+
+  subtract({ productId, userId }) {
+    const sql = `UPDATE carts
+          SET quantity = quantity - 1
+          WHERE user_id = $user_id
+          AND product_id = $product_id`;
+
+    const params = { $product_id: productId, $user_id: userId };
 
     return new Promise((resolve, reject) => {
       db.run(sql, params, (err) => {
