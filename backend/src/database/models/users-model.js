@@ -53,11 +53,9 @@ export default {
       db.all(sql, (err, rows) => {
         if (err) reject(err);
         else {
-          resolve(rows.map(row => (
-            {id: row.id, email: row.email, isAdmin: row.is_admin}
-          )))
+          resolve(rows.map((row) => ({ id: row.id, email: row.email, isAdmin: row.is_admin })));
         }
-      })
-    })
-  }
+      });
+    });
+  },
 };
