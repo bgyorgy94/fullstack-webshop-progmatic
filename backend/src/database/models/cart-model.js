@@ -113,4 +113,18 @@ export default {
       });
     });
   },
+
+  deleteAll({ userId }) {
+    const sql = `DELETE FROM carts
+        WHERE user_id = $user_id`;
+
+    const params = { $user_id: userId };
+
+    return new Promise((resolve, reject) => {
+      db.run(sql, params, (err) => {
+        if (err) reject(err);
+        else resolve({ userId });
+      });
+    });
+  },
 };

@@ -22,4 +22,8 @@ export default {
       return cartModel.subtract(payload);
     });
   },
+
+  deleteAll(payload) {
+    return cartModel.deleteAll(payload);
+  },
 };
