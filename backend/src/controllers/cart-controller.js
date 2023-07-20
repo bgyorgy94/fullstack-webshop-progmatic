@@ -35,4 +35,14 @@ export default {
       next(err);
     }
   },
+
+  async deleteAll(req, res, next) {
+    const userId = req.user.id;
+    try {
+      const deletedId = await cartService.deleteAll({ userId });
+      res.send(deletedId);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
