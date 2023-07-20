@@ -10,15 +10,20 @@ export default {
   },
 
   find(data) {
-    return publicApi.get(`api/users/${data.id}`,{headers:{"authorization": `BEARER ${data.token}`}});
+    return publicApi.get(`api/users/${data.id}`, {
+      headers: { authorization: `BEARER ${data.token}` },
+    });
   },
 
-  update(id,data) {
-    return publicApi.patch(`api/users/${id}`,data,{headers:{"authorization": `BEARER ${data.userData.token}`}});
+  update(id, data) {
+    return publicApi.patch(`api/users/${id}`, data, {
+      headers: { authorization: `BEARER ${data.userData.token}` },
+    });
   },
 
   delete(data) {
-    return publicApi.delete(`api/users/${data.id}`,{headers:{"authorization": `BEARER ${data.token}`}});
-  }
-
+    return publicApi.delete(`api/users/${data.id}`, {
+      headers: { authorization: `BEARER ${data.token}` },
+    });
+  },
 };

@@ -1,10 +1,12 @@
 import express from 'express';
 import usersController from '../controllers/users-controller';
+import userVerify from '../middlewares/user-verify-middleware';
 
 const router = express.Router();
 
-router.get('/users/:id', usersController.find);
-router.patch('/users/:id', usersController.update);
-router.delete('/users/:id', usersController.delete);
+router.get('/', userVerify, usersController.getAll);
+router.get('/:id', userVerify, usersController.find);
+router.patch('/:id', userVerify, usersController.update);
+router.delete('/:id', userVerify, usersController.delete);
 
 export default router;

@@ -45,32 +45,47 @@ export default {
       });
     });
   },
-  
-  find ({ id }) {
+
+  getAll() {
+    const sql = 'SELECT * FROM users';
+
+    return new Promise((resolve, reject) => {
+      db.all(sql, (err, rows) => {
+        if (err) reject(err);
+        else {
+          resolve(rows.map((row) => ({ id: row.id, email: row.email, isAdmin: row.is_admin })));
+        }
+      });
+    });
+  },
+
+  find({ id }) {
     const sql = `SELECT * FROM users WHERE id = $id`;
-    const param = { 
+    const param = {
       $id: id,
     };
-    return new Promise((resolve,reject) => {
-      db.get(sql,param,(err,row) => {
-          if(err) reject(err);
-          else resolve(row);
+    return new Promise((resolve, reject) => {
+      db.get(sql, param, (err, row) => {
+        if (err) reject(err);
+        else resolve(row);
       });
     });
   },
 
   update({ id, email, password_hash, is_admin }) {
-    const sql = `UPDATE users SET ${email? 'email = $email' : '' }${password_hash? ', password_hash = $password_hash' : ''}${is_admin? ', is_admin = $is_admin' : ''} WHERE id = $id`;
+    const sql = `UPDATE users SET ${email ? 'email = $email' : ''}${
+      password_hash ? ', password_hash = $password_hash' : ''
+    }${is_admin ? ', is_admin = $is_admin' : ''} WHERE id = $id`;
     const params = {
       $id: id,
       $email: email,
       $password_hash: password_hash,
-      $is_admin: is_admin
+      $is_admin: is_admin,
     };
 
     return new Promise((resolve, reject) => {
       db.run(sql, params, (err) => {
-        if(err) reject(err);
+        if (err) reject(err);
         else resolve({ email, password_hash, is_admin });
       });
     });
@@ -80,12 +95,11 @@ export default {
     const sql = `DELETE FROM users WHERE id = $id`;
     const param = { $id: id };
 
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       db.run(sql, param, (err) => {
-        if(err) reject(err);
+        if (err) reject(err);
         else resolve({ id });
-      })
-    })
-  }
-
+      });
+    });
+  },
 };
