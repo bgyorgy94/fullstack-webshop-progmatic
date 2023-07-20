@@ -22,4 +22,9 @@ export default {
     const productId = req.params.id;
     cartService.delete({ productId, userId }).then((deletedProduct) => res.send(deletedProduct));
   },
+
+  deleteAll(req, res, next) {
+    const userId = req.user.id;
+    cartService.deleteAll({ userId }).then((deletedId) => res.send(deletedId));
+  },
 };
