@@ -31,7 +31,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/cart',
-    element: <Cart />
+    element: <Cart />,
   },
   {
     path: '/admin',
@@ -39,10 +39,10 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/admin/users',
-        element: <UserList />
-      }
-    ]
-  }
+        element: <UserList />,
+      },
+    ],
+  },
 ]);
 
 function App() {
