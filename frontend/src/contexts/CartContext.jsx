@@ -18,7 +18,5 @@ export function CartProvider({ children }) {
         };
     }, [user.token]);
 
-    console.log(cart)
-
     return <CartContext.Provider value={[cart, setCart]}>{children}</CartContext.Provider>
 }
