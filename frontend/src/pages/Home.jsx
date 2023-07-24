@@ -5,8 +5,6 @@ import { UserContext } from '../contexts/UserContext';
 export default function Home() {
   const [user] = useContext(UserContext);
 
-  console.log(user);
-
   return (
     <>
       <p>Ez lesz a kezdőoldal!</p>

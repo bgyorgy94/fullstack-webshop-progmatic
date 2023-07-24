@@ -1,16 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
 import privateApi from '../api/privateApi';
 import { UserContext } from '../contexts/UserContext';
-import { useParams } from 'react-router-dom';
 
-export default function useOrders() {
+export default function useOrders(orderId) {
   const [orders, setOrders] = useState([]);
+  const [order, setOrder] = useState({});
   const [user] = useContext(UserContext);
-  const { orderId } = useParams();
 
   const fetchUserOrders = async () => {
     try {
-      const response = await privateApi.post(`/orders`, { id: user.id });
+      const response = await privateApi.get(`/orders`);
       console.log('Orders response:', response);
       setOrders(response.data.orders);
     } catch (error) {
@@ -20,9 +19,9 @@ export default function useOrders() {
 
   const fetchUserOrder = async () => {
     try {
-      const response = await privateApi.post(`/orders/${orderId}`, { id: user.id });
+      const response = await privateApi.get(`/orders/${orderId}`);
       console.log('Order response:', response);
-      setOrders(response.data);
+      setOrder(response.data);
     } catch (error) {
       console.error('Error fetching order:', error);
     }
@@ -31,15 +30,20 @@ export default function useOrders() {
   useEffect(() => {
     if (orderId) {
       fetchUserOrder(orderId);
+      console.log(user);
+      console.log(orders);
     } else {
       fetchUserOrders();
+      console.log(user);
+      console.log(orders);
     }
-  }, [user, orderId]);
+  }, [orderId]);
 
   // createOrder
   // deleteOrder
 
   return {
+    order,
     orders,
     orderId,
   };

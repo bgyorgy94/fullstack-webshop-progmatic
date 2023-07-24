@@ -48,8 +48,10 @@ const router = createBrowserRouter([
   },
   {
     path: '/orders',
-    element: <UserOrders />,
-    children: [{ path: ':orderId', element: <UserOrder /> }],
+    children: [
+      { index: true, element: <UserOrders /> },
+      { path: ':orderId', element: <UserOrder /> },
+    ],
   },
 ]);
 

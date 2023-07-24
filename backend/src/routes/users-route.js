@@ -4,6 +4,8 @@ import userVerify from '../middlewares/user-verify-middleware';
 
 const router = express.Router();
 
-router.get('/', userVerify, usersController.getAll);
+router.use(userVerify);
+
+router.get('/', usersController.getAll);
 
 export default router;

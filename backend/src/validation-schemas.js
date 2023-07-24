@@ -7,7 +7,9 @@ export const productSchema = yup.object({
   categoryId: yup.string().nullable(),
 });
 
-export const categorySchema = yup.string().required().min(3).max(16);
+export const categorySchema = yup.object({
+  name: yup.string().required().min(3).max(16),
+});
 
 export const authSchema = yup.object({
   email: yup.string().required().email(),

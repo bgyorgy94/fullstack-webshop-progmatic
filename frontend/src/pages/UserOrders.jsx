@@ -9,8 +9,8 @@ export default function UserOrders() {
       {orders.map((order) => (
         <div key={order.id}>
           <p>Order ID: {order.id}</p>
-          <p>Order title: {order.title}</p>
-          <p>Order price: {order.price}</p>
+          <p>Order date: {order.created_at}</p>
+          <p>Order total price: {order.total}</p>
         </div>
       ))}
     </div>

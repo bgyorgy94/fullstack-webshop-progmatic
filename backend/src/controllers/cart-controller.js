@@ -15,7 +15,7 @@ export default {
   async getAll(req, res, next) {
     const userId = req.user.id;
     try {
-      const cartItems = await cartService.getAll({ userId });
+      const cartItems = await cartService.getAll(userId);
       res.send({
         items: cartItems,
         total: cartItems.map((item) => item.subtotal).reduce((acc, curr) => acc + curr, 0),

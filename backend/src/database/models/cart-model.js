@@ -9,9 +9,8 @@ export default {
             quantity INTEGER DEFAULT 1,
             FOREIGN KEY (product_id) REFERENCES products(id),
             FOREIGN KEY (user_id) REFERENCES users(id)
+            CHECK(quantity > 0)
         )`;
-
-    // TBA: quantity ne mehessen 1 ala CHECK(quantity > 0)
 
     db.run(sql, (err) => {
       if (err) {
@@ -67,7 +66,7 @@ export default {
     });
   },
 
-  getAll({ userId }) {
+  getAll(userId) {
     const sql = `SELECT p.id, p.title, p.price, c.quantity, p.price * c.quantity AS subtotal
             FROM products p
             JOIN carts c
@@ -79,6 +78,7 @@ export default {
 
     return new Promise((resolve, reject) => {
       db.all(sql, params, (err, rows) => {
+        console.log(rows, userId);
         if (err) reject(err);
         else resolve(rows);
       });
