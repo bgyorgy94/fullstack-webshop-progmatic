@@ -5,10 +5,12 @@ import HttpError from '../utils/httpError';
 export default function userVerify(req, res, next) {
   try {
     const token = req.headers.authorization.split(' ')[1];
+
     const payload = jwt.verify(token, JWT_SECRET_KEY);
     req.user = payload;
     next();
-  } catch {
+  } catch (error) {
+    console.log('Error in userVerify middleware:', error);
     next(new HttpError('invalid token', 400));
   }
 }

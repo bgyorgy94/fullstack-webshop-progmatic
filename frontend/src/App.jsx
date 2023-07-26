@@ -1,31 +1,35 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import RegisterUser from './pages/RegisterUser';
-import Home from './pages/Home';
 import Categories from './pages/Categories';
 import Category from './components/Category';
-import './App.css';
+import RegisterUser from './pages/RegisterUser';
+import Home from './pages/Home';
 import Login from './pages/Login';
-import { UserProvider } from './contexts/UserContext';
 import UserList from './pages/UserList';
 import Admin from './pages/Admin';
+// import AdminOrders from './pages/AdminOrders';
+// import AdminOrder from './components/AdminOrder';
+import UserOrders from './pages/UserOrders';
+import UserOrder from './components/UserOrder';
+import { UserProvider } from './contexts/UserContext';
+import './App.css';
 
 const router = createBrowserRouter([
-  {
-    path: '/register',
-    element: <RegisterUser />,
-  },
   {
     path: '/',
     element: <Home />,
   },
   {
-    path: '/categories',
-    element: <Categories />,
+    path: '/register',
+    element: <RegisterUser />,
   },
-  { path: '/categories/:id', element: <Category /> },
   {
     path: '/login',
     element: <Login />,
+  },
+  {
+    path: '/categories',
+    element: <Categories />,
+    children: [{ path: ':categoryId', element: <Category /> }],
   },
   {
     path: '/admin',
@@ -35,6 +39,18 @@ const router = createBrowserRouter([
         path: '/admin/users',
         element: <UserList />,
       },
+      /* {
+        path: '/admin/orders',
+        element: <AdminOrders />,
+        children: [{ path: ':orderId', element: <AdminOrder /> }],
+      }, */
+    ],
+  },
+  {
+    path: '/orders',
+    children: [
+      { index: true, element: <UserOrders /> },
+      { path: ':orderId', element: <UserOrder /> },
     ],
   },
 ]);
