@@ -1,19 +1,31 @@
-import usersModel from '../database/models/users-model';
+import { User } from '../database/models';
+import nanoid from 'nanoid';
 
 export default {
-  find(payload) {
-    return usersModel.find(payload);
+  async find(id) {
+    const user = await User.findByPk(id);
+    return user ? user.toJSON() : null;
   },
 
-  update(payload) {
-    return usersModel.update(payload);
+  async update(id, email, passwordHash, isAdmin) {
+    await User.update({ email, passwordHash, isAdmin }, { where: { id } });
+    const updatedUser = await User.findByPk(id);
+    return updatedUser.toJSON();
   },
 
-  delete(payload) {
-    return usersModel.delete(payload);
+  async delete(id) {
+    await User.destroy({ where: { id } });
+    return { id };
   },
 
-  getAll() {
-    return usersModel.getAll();
+  async getAll() {
+    const users = await User.findAll();
+    return users.map((user) => user.toJSON());
+  },
+
+  async create(email, passwordHash, isAdmin = false) {
+    const id = nanoid();
+    const user = await User.create({ id, email, passwordHash, isAdmin });
+    return user.toJSON();
   },
 };

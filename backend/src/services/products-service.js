@@ -1,23 +1,36 @@
-import productsModel from '../database/models/products-model';
+import { Product } from '../database/models';
 
 export default {
-  findAll() {
-    return productsModel.getAll();
+  async findAll() {
+    const products = await Product.findAll({
+      attributes: ['title', 'price', 'description', 'categoryId'],
+      include: {
+        model: Category,
+        attributes: ['name'],
+        as: 'category',
+      },
+    });
+    return products.map((product) => product.toJSON());
   },
 
-  find(productId) {
-    return productsModel.get(productId);
+  async find(id) {
+    const product = await Product.findByPk(id);
+    return product ? product.toJSON() : null;
   },
 
-  create({ title, price, description, categoryId }) {
-    return productsModel.create({ title, price, description, categoryId });
+  async create({ title, price, description, categoryId }) {
+    const product = await Product.create({ title, price, description, categoryId });
+    return product.toJSON();
   },
 
-  update(productId, title, price, description, categoryId) {
-    return productsModel.update(productId, title, price, description, categoryId);
+  async update(id, title, price, description, categoryId) {
+    await Product.update({ title, price, description, categoryId }, { where: { id } });
+    const updatedProduct = await Product.findByPk(id);
+    return updatedProduct.toJSON();
   },
 
-  delete(productId) {
-    return productsModel.delete(productId);
+  async delete(id) {
+    await Product.destroy({ where: { id } });
+    return { id };
   },
 };

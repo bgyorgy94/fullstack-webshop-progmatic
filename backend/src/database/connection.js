@@ -1,15 +1,23 @@
-import Sqlite3 from 'sqlite3';
-import { resolve } from 'path';
+import Sequelize from 'sequelize';
 
-Sqlite3.verbose();
-
-const db = new Sqlite3.Database(resolve('src', 'database', 'db', 'webshop.db'), (err) => {
-  if (err) {
-    console.log('Database connection error!');
-    process.exit(1);
-  } else {
-    console.log('Db connection successful');
-  }
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: './src/database/db/webshop.db',
 });
 
-export default db;
+// Immediately Invoked Function Expression (IIFE)
+// https://developer.mozilla.org/en-US/docs/Glossary/IIFE
+// new scope for async/await
+// + () at the end of the function to call it immediately, because top level code cannot be async
+
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Db connection successful');
+  } catch (err) {
+    console.log('Database connection error!', err);
+    process.exit(1);
+  }
+})();
+
+export default sequelize;

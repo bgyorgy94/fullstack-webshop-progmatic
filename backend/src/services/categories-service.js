@@ -1,19 +1,20 @@
-import categoriesModel from '../database/models/categories-model';
+import Category from '../models/categories-model';
 
 export default {
   create(name) {
-    return categoriesModel.create({ name });
+    return Category.create({ name });
   },
   delete(id) {
-    return categoriesModel.delete(id);
+    return Category.destroy({ where: { id } });
   },
   update(id, name) {
-    return categoriesModel.update(id, name);
+    return Category.update({ name }, { where: { id } });
   },
   findAll() {
-    return categoriesModel.getAll();
+    return Category.findAll();
   },
   findById(id) {
-    return categoriesModel.getById(id);
+    // findByPk megkeresi a megadott id-vel rendelkezo rekordot
+    return Category.findByPk(id);
   },
 };

@@ -1,66 +1,90 @@
-import ordersModel from '../database/models/orders-model';
-import cartService from './cart-service';
+import { Order, OrderProduct, Cart, Product } from '../database/models';
+import sequelize from 'sequelize';
 
 export default {
-  // NOT IN USE
   async findAll(userId) {
-    const orders = await ordersModel.getAll(userId);
-    return orders;
+    const orders = await Order.findAll({ where: { userId } });
+
+    return orders.map((order) => order.toJSON());
   },
-  // NOT IN USE
+
   async find(userId, orderId) {
-    const order = await ordersModel.getById(userId, orderId);
-    return order;
+    const order = await Order.findOne({ where: { userId, id: orderId } });
+
+    return order ? order.toJSON() : null;
   },
 
   async getAllOrdersInfo(userId) {
-    const orderInfo = await ordersModel.getAllOrdersInfo(userId);
-    return orderInfo;
+    const orderInfo = await Order.findAll({
+      where: { userId },
+      attributes: [
+        'id',
+        'createdAt',
+        [
+          sequelize.fn('SUM', sequelize.col('OrderProducts.price * OrderProducts.quantity')),
+          'total',
+        ],
+      ],
+      group: ['Order.id'],
+      include: { model: OrderProduct, attributes: [] },
+    });
+
+    return orderInfo.map((order) => order.toJSON());
   },
 
   async getOrderDetails(orderId, userId) {
-    let orderDetails;
-    let orderInfo;
-    if (userId) {
-      orderDetails = await ordersModel.getAllOrderDetailsByUserId({ orderId, userId });
-      orderInfo = await ordersModel.getOrderInfoByUserId(userId, orderId);
-    } else {
-      orderDetails = await ordersModel.getAllOrderDetails({ orderId });
-      orderInfo = await ordersModel.getOrderInfo(orderId);
-    }
+    const orderInfo = await Order.findOne({
+      where: { id: orderId, userId },
+      attributes: [
+        'id',
+        'createdAt',
+        [
+          sequelize.fn('SUM', sequelize.col('OrderProducts.price * OrderProducts.quantity')),
+          'total',
+        ],
+      ],
+      group: ['Order.id'],
+      include: { model: OrderProduct, attributes: [] },
+    });
+
+    const orderDetails = await OrderProduct.findAll({
+      where: { orderId },
+      include: { model: Product, attributes: ['id', 'title'] },
+      attributes: ['quantity', 'price', [sequelize.literal('quantity * price'), 'subtotal']],
+    });
 
     return {
-      ...orderInfo,
-      products: orderDetails,
+      ...orderInfo.toJSON(),
+      products: orderDetails.map((detail) => detail.toJSON()),
     };
   },
 
-  async getOrderDetailsByUserId(userId, orderId) {
-    const orderInfo = await ordersModel.getAllOrdersInfo({ userId });
-    const orderDetails = await ordersModel.getAllOrderDetails({ orderId });
+  async create(userId) {
+    const newOrder = await Order.create({ userId });
 
-    return {
-      info: orderInfo,
-      details: orderDetails,
-    };
-  },
+    const cartItems = await Cart.findAll({ where: { userId } });
 
-  async create({ userId }) {
-    const newOrder = await ordersModel.create(userId);
-    console.log('userid:', userId);
-    const cart = await cartService.getAll(userId);
-    console.log('cart:', cart);
     await Promise.all(
-      cart.map((item) =>
-        ordersModel.createOrderProduct(newOrder.orderId, item.id, item.quantity, item.price),
+      cartItems.map((item) =>
+        OrderProduct.create({
+          orderId: newOrder.id,
+          productId: item.productId,
+          quantity: item.quantity,
+          price: item.price,
+        }),
       ),
     );
-    await cartService.deleteAll(userId);
-    return newOrder;
+
+    await Cart.destroy({ where: { userId } });
+
+    return newOrder.toJSON();
   },
 
   async delete(userId, orderId) {
-    const deletedOrder = await ordersModel.delete(userId, orderId);
+    const deletedOrder = await Order.destroy({
+      where: { id: orderId, userId },
+    });
+
     return deletedOrder;
   },
 };
