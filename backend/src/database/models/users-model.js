@@ -72,21 +72,21 @@ export default {
     });
   },
 
-  update({ id, email, password_hash, is_admin }) {
+  update({ id, email, passwordHash, isAdmin }) {
     const sql = `UPDATE users SET ${email ? 'email = $email' : ''}${
-      password_hash ? ', password_hash = $password_hash' : ''
-    }${is_admin ? ', is_admin = $is_admin' : ''} WHERE id = $id`;
+      passwordHash ? ', password_hash = $passwordHash' : ''
+    }${isAdmin ? ', is_admin = $isAdmin' : ''} WHERE id = $id`;
     const params = {
       $id: id,
       $email: email,
-      $password_hash: password_hash,
-      $is_admin: is_admin,
+      $password_hash: passwordHash,
+      $is_admin: isAdmin,
     };
 
     return new Promise((resolve, reject) => {
       db.run(sql, params, (err) => {
         if (err) reject(err);
-        else resolve({ email, password_hash, is_admin });
+        else resolve({ email, passwordHash, isAdmin });
       });
     });
   },

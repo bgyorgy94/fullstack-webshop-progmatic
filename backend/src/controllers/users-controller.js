@@ -21,14 +21,20 @@ export default {
 
   async update(req, res, next) {
     const { id } = req.params;
-    const { email, password_hash, is_admin, address } = req.body;
+    const { email, passwordHash, isAdmin, address } = req.body;
+
+    // isAdmin -> admin oldali opcio
+    // passwordHash -> nem szabad modositani
+    // (kulon endpointba, pl. /api/users/:id/password, adott user pw-jet lehet modositani - regi + uj pw)
+    // EXTRA - elfelejtett jelszo - admin oldalrol kuldjuk el a jelszogeneralo linket a usernek
+
     if (req.body.userData.isAdmin || req.body.userData.id === id) {
       try {
         const user = await usersService.update({
           id,
           email,
-          password_hash,
-          is_admin,
+          passwordHash,
+          isAdmin,
           address,
         });
         res.send(user);
