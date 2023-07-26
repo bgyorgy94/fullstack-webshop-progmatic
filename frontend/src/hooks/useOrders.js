@@ -30,12 +30,8 @@ export default function useOrders(orderId) {
   useEffect(() => {
     if (orderId) {
       fetchUserOrder(orderId);
-      console.log(user);
-      console.log(orders);
     } else {
       fetchUserOrders();
-      console.log(user);
-      console.log(orders);
     }
   }, [orderId]);
 

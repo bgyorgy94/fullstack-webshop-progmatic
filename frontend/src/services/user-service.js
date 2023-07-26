@@ -1,4 +1,5 @@
 import axios from 'axios';
+import publicApi from '../api/publicApi';
 import API_URL from '../constants';
 
 export default {
