@@ -1,8 +1,8 @@
 import productsModel from '../database/models/products-model';
 
 export default {
-  findAll() {
-    return productsModel.getAll();
+  findAll(payload) {
+    return productsModel.getAll(payload);
   },
 
   find(payload) {

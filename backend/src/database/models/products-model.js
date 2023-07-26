@@ -20,13 +20,38 @@ export default {
     });
   },
 
-  getAll() {
-    const sql = `SELECT p.title, p.price, p.description, c.name as category FROM products p JOIN categories c ON p.category_id = c.id`;
+  getAll({ orderBy, order, filter }) {
+
+    const sql1 = `SELECT p.id, p.title, p.price, p.description, c.name as category FROM products p JOIN categories c ON p.category_id = c.id`;
+    const sql2 = `SELECT p.id, p.title, p.price, p.description, c.name as category 
+            FROM products p 
+            JOIN categories c 
+            ON p.category_id = c.id
+            WHERE p.title LIKE '%${filter}%'
+            ORDER BY ${orderBy} ${order}`;
+    const sql3 = `SELECT p.id, p.title, p.price, p.description, c.name as category 
+            FROM products p 
+            JOIN categories c 
+            ON p.category_id = c.id
+            ORDER BY ${orderBy} ${order}`;
+    const sql4 = `SELECT p.id, p.title, p.price, p.description, c.name as category 
+            FROM products p 
+            JOIN categories c 
+            ON p.category_id = c.id
+            WHERE p.title LIKE '%${filter}%'`;
+             
+    let sql;
+
+    if (!filter && !orderBy && !order) sql = sql1;
+    else if (filter && orderBy && order) sql = sql2;
+    else if (!filter && orderBy && order) sql = sql3;
+    else if (filter && !orderBy && !order) sql = sql4;
+    
     return new Promise((resolve, reject) => {
-      db.all(sql, (err, rows) => {
-        if (err) reject(err);
-        else resolve(rows);
-      });
+        db.all(sql, (err, rows) => {
+          if (err) reject(err);
+          else resolve(rows);
+        });
     });
   },
 

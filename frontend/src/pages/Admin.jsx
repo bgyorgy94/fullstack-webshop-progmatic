@@ -5,6 +5,7 @@ export default function Admin() {
     <>
       <h2>Ez az admin oldal!</h2>
       <Link to="/admin/users">Felhasználók</Link>
+      <Link to="/admin/products">Termékek</Link>
       <Outlet />
     </>
   );

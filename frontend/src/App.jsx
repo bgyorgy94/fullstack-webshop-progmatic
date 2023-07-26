@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import { UserProvider } from './contexts/UserContext';
 import UserList from './pages/UserList';
 import Admin from './pages/Admin';
+import AdminProductList from './pages/AdminProductList/AdminProductList';
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
         path: '/admin/users',
         element: <UserList />,
       },
+      {
+        path: '/admin/products',
+        element: <AdminProductList />
+      }
     ],
   },
 ]);
