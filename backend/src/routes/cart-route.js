@@ -4,10 +4,12 @@ import userVerify from '../middlewares/user-verify-middleware';
 
 const router = express.Router();
 
-router.post('/', userVerify, cartController.add);
-router.get('/', userVerify, cartController.getAll);
-router.delete('/:id', userVerify, cartController.delete);
-router.delete('/remove/:id', userVerify, cartController.remove);
-router.delete('/', userVerify, cartController.deleteAll);
+router.use(userVerify);
+
+router.post('/', cartController.add);
+router.get('/', cartController.getAll);
+router.delete('/:id', cartController.delete);
+router.delete('/remove/:id', cartController.remove);
+router.delete('/', cartController.deleteAll);
 
 export default router;

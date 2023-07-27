@@ -3,59 +3,72 @@ import usersService from '../services/users-service';
 import HttpError from '../utils/httpError';
 
 export default {
-  find(req, res, next) {
+  async find(req, res, next) {
     const { id } = req.params;
     const decoded = jwtDecode(req.headers.authorization);
-    usersService
-      .find({ id })
-      .then((user) => {
-        if (decoded.isAdmin || user.id === decoded.id) {
-          res.setHeader('authorization', req.headers.authorization);
-          res.status(200).send(user);
-        } else {
-          res.sendStatus(403);
-        }
-      })
-      .catch(next);
+    try {
+      const user = await usersService.find({ id });
+      if (decoded.isAdmin || user.id === decoded.id) {
+        res.setHeader('authorization', req.headers.authorization);
+        res.status(200).send(user);
+      } else {
+        res.sendStatus(403);
+      }
+    } catch (err) {
+      next(err);
+    }
   },
 
-  update(req, res, next) {
+  async update(req, res, next) {
     const { id } = req.params;
-    const { email, password_hash, is_admin, address } = req.body;
+    const { email, passwordHash, isAdmin, address } = req.body;
+
+    // isAdmin -> admin oldali opcio
+    // passwordHash -> nem szabad modositani
+    // (kulon endpointba, pl. /api/users/:id/password, adott user pw-jet lehet modositani - regi + uj pw)
+    // EXTRA - elfelejtett jelszo - admin oldalrol kuldjuk el a jelszogeneralo linket a usernek
+
     if (req.body.userData.isAdmin || req.body.userData.id === id) {
-      usersService
-        .update({ id, email, password_hash, is_admin, address })
-        .then((user) => {
-          res.setHeader('authorization', `Bearer ${req.body.userData.token}`);
-          res.status(200).send(user);
-        })
-        .catch(next);
+      try {
+        const user = await usersService.update({
+          id,
+          email,
+          passwordHash,
+          isAdmin,
+          address,
+        });
+        res.send(user);
+      } catch (err) {
+        next(err);
+      }
     } else {
       res.sendStatus(403);
     }
   },
 
-  getAll(req, res, next) {
+  async getAll(req, res, next) {
     if (req.user.isAdmin === 1) {
-      usersService.getAll().then((users) => {
+      try {
+        const users = await usersService.getAll();
         res.send(users);
-      });
+      } catch (err) {
+        next(err);
+      }
     } else {
-      throw new HttpError('Unauthenticated', 401);
+      next(new HttpError('Unauthenticated', 401));
     }
   },
 
-  delete(req, res, next) {
+  async delete(req, res, next) {
     const { id } = req.params;
     const decoded = jwtDecode(req.headers.authorization);
     if (decoded.isAdmin || id === decoded.id) {
-      usersService
-        .delete({ id })
-        .then((user) => {
-          res.setHeader('authorization', `Bearer ${req.headers.authorization}`);
-          res.sendStatus(200);
-        })
-        .catch(next);
+      try {
+        const user = await usersService.delete({ id });
+        res.send(user);
+      } catch (err) {
+        next(err);
+      }
     } else {
       res.sendStatus(403);
     }
