@@ -9,6 +9,7 @@ router.use(userVerify);
 router.post('/', cartController.add);
 router.get('/', cartController.getAll);
 router.delete('/:id', cartController.delete);
+router.delete('/remove/:id', cartController.remove);
 router.delete('/', cartController.deleteAll);
 
 export default router;

@@ -36,6 +36,12 @@ export default {
     }
   },
 
+  remove(req, res, next) {
+    const userId = req.user.id;
+    const productId = req.params.id;
+    cartService.remove({ productId, userId }).then((removedItem) => res.send(removedItem));
+  },
+
   async deleteAll(req, res, next) {
     const userId = req.user.id;
     try {

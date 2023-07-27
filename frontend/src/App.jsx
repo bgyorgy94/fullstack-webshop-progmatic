@@ -3,15 +3,17 @@ import Categories from './pages/Categories';
 import Category from './components/Category';
 import RegisterUser from './pages/RegisterUser';
 import Home from './pages/Home';
+import './App.scss';
 import Login from './pages/Login';
 import UserList from './pages/UserList';
 import Admin from './pages/Admin';
+import { CartProvider } from './contexts/CartContext';
+import Cart from './pages/Cart/Cart';
 // import AdminOrders from './pages/AdminOrders';
 // import AdminOrder from './components/AdminOrder';
 import UserOrders from './pages/UserOrders';
 import UserOrder from './components/UserOrder';
 import { UserProvider } from './contexts/UserContext';
-import './App.css';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <Login />,
+  },
+  {
+    path: '/cart',
+    element: <Cart />,
   },
   {
     path: '/categories',
@@ -58,7 +64,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <UserProvider>
-      <RouterProvider router={router} />
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
     </UserProvider>
   );
 }
