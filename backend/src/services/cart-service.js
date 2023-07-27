@@ -23,6 +23,10 @@ export default {
     });
   },
 
+  remove(payload) {
+    return cartModel.delete(payload);
+  },
+
   deleteAll(payload) {
     return cartModel.deleteAll(payload);
   },

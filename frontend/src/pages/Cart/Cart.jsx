@@ -3,13 +3,14 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import CloseButton from 'react-bootstrap/CloseButton';
 import useCart from '../../hooks/useCart';
 import { CartContext } from '../../contexts/CartContext';
 import './Cart.css';
 
 export default function Cart() {
   const [cart, setCart] = useContext(CartContext);
-  const { increase, decrease, emptyCart } = useCart();
+  const { increase, decrease, emptyCart, remove } = useCart();
 
   return (
     <Container>
@@ -36,6 +37,9 @@ export default function Cart() {
                     </Button>
                   </Col>
                   <Col>{product.subtotal} Ft</Col>
+                  <Col>
+                    <CloseButton onClick={() => remove(product.id)} />
+                  </Col>
                 </Row>
               );
             })}
@@ -51,12 +55,12 @@ export default function Cart() {
               <Col className="margin-top">{cart.total} Ft</Col>
             </Row>
             <Row>
-              <Button variant="dark" className="margin-top">
+              <Button variant="primary" className="margin-top primary-button">
                 Megrendelés
               </Button>
             </Row>
             <Row>
-              <Button variant="outline-dark" className="empty-cart margin-top" onClick={emptyCart}>
+              <Button variant="outline-primary" className="empty-cart margin-top" onClick={emptyCart}>
                 Kosár ürítése
               </Button>
             </Row>

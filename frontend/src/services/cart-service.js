@@ -13,6 +13,10 @@ export default {
     return privateApi.delete(`api/carts/items/${productId}`);
   },
 
+  instantRemoveFromCart(productId) {
+    return privateApi.delete(`api/carts/items/remove/${productId}`);
+  },
+
   emptyCart() {
     return privateApi.delete('api/carts/items');
   },

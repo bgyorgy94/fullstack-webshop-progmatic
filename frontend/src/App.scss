@@ -1,6 +1,13 @@
+$primary: black;
+$primary-hover: rgba(0, 0, 0, 0.808);
+
 @import url(https://db.onlinewebfonts.com/c/88f10bf18a36407ef36bf30bc25a3618?family=SuisseIntl-Regular);
 @import 'bootstrap/scss/bootstrap.scss';
 
 body {
     font-family: "SuisseIntl-Regular";
+}
+
+.primary-button:hover {
+    background-color: $primary-hover;
 }

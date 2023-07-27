@@ -23,6 +23,12 @@ export default {
     cartService.delete({ productId, userId }).then((deletedProduct) => res.send(deletedProduct));
   },
 
+  remove(req, res, next) {
+    const userId = req.user.id;
+    const productId = req.params.id;
+    cartService.remove({ productId, userId }).then((removedItem) => res.send(removedItem));
+  },
+
   deleteAll(req, res, next) {
     const userId = req.user.id;
     cartService.deleteAll({ userId }).then((deletedId) => res.send(deletedId));

@@ -33,6 +33,15 @@ export default function useCart() {
     setCart({ ...cart, items: cartItems, total: cartTotal });
   }
 
+  function remove(productId) {
+    cartService.instantRemoveFromCart(productId);
+    const index = cartItems.findIndex((item) => item.id === productId);
+    cartTotal -= cartItems[index].price * cartItems[index].quantity;
+    delete cartItems[index];
+
+    setCart({ ...cart, items: cartItems, total: cartTotal });
+  }
+
   function emptyCart() {
     cartService.emptyCart();
     setCart({
@@ -41,5 +50,5 @@ export default function useCart() {
     });
   }
 
-  return { increase, decrease, emptyCart };
+  return { increase, decrease, emptyCart, remove };
 }
