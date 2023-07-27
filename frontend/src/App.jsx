@@ -8,6 +8,9 @@ import Login from './pages/Login';
 import { UserProvider } from './contexts/UserContext';
 import UserList from './pages/UserList';
 import Admin from './pages/Admin';
+import './style.scss';
+import { LoginModalProvider } from './contexts/LoginModalContext';
+import { RegisterModalProvider } from './contexts/RegisterModalContext';
 
 const router = createBrowserRouter([
   {
@@ -39,10 +42,15 @@ const router = createBrowserRouter([
   },
 ]);
 
+
 function App() {
   return (
     <UserProvider>
-      <RouterProvider router={router} />
+      <LoginModalProvider>
+        <RegisterModalProvider>
+        <RouterProvider router={router} />
+      </RegisterModalProvider>
+      </LoginModalProvider>
     </UserProvider>
   );
 }
