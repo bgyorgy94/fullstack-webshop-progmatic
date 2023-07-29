@@ -5,19 +5,19 @@ export default {
     return productsModel.getAll(payload);
   },
 
-  find(payload) {
-    return productsModel.get(payload);
+  find(productId) {
+    return productsModel.get(productId);
   },
 
-  create(payload) {
-    return productsModel.create(payload);
+  create({ title, price, description, categoryId }) {
+    return productsModel.create({ title, price, description, categoryId });
   },
 
-  udpate(payload) {
-    return productsModel.update(payload);
+  update(productId, title, price, description, categoryId) {
+    return productsModel.update(productId, title, price, description, categoryId);
   },
 
-  delete(payload) {
-    return productsModel.delete(payload);
+  delete(productId) {
+    return productsModel.delete(productId);
   },
 };

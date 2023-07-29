@@ -48,7 +48,7 @@ export default {
     });
   },
 
-  get({ id }) {
+  get(id) {
     const sql = `SELECT * FROM products WHERE id = $id`;
     const param = { $id: id };
 
@@ -79,7 +79,7 @@ export default {
     });
   },
 
-  update({ id, title, price, description, categoryId }) {
+  update(id, title, price, description, categoryId) {
     const sql = `UPDATE products SET title = $title, price = $price, description = $description, category_id = $categoryId WHERE id = $id`;
     const params = {
       $id: id,
@@ -92,19 +92,19 @@ export default {
     return new Promise((resolve, reject) => {
       db.run(sql, params, (err) => {
         if (err) reject(err);
-        else resolve({ id, title, price, description, categoryId });
+        else resolve(id, title, price, description, categoryId);
       });
     });
   },
 
-  delete({ id }) {
+  delete(id) {
     const sql = `DELETE FROM products WHERE id = $id`;
     const param = { $id: id };
 
     return new Promise((resolve, reject) => {
       db.run(sql, param, (err) => {
         if (err) reject(err);
-        else resolve({ id });
+        else resolve(id);
       });
     });
   },

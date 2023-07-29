@@ -4,7 +4,7 @@ import publicApi from '../api/publicApi';
 function useCategory(id) {
   const [category, setCategory] = useState(null);
 
-  const fetchCategory = async (id) => {
+  const fetchCategory = async () => {
     try {
       const response = await publicApi.get(`/categories/${id}`);
       setCategory(response.data);

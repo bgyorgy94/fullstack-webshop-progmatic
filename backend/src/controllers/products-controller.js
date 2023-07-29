@@ -1,51 +1,65 @@
 import productsService from '../services/products-service';
-import HttpError from '../utils/httpError';
 
 export default {
-  findAll(req, res, next) {
+  async findAll(req, res, next) {
     const {orderBy, order, title, minPrice, maxPrice} = req.query;
-    productsService
-      .findAll({ orderBy, order, title, minPrice, maxPrice })
-      .then((products) => {
-        res.send({ products });
-      })
-      .catch(next);
+    try {
+      const products = await productsService.findAll({ orderBy, order, title, minPrice, maxPrice });
+      res.send(products);
+    } catch (error) {
+      next(error);
+    }
   },
 
-  find(req, res, next) {
+  async find(req, res, next) {
     const { id } = req.params;
-    productsService
-      .find({ id })
-      .then((product) => {
-        console.log(product);
-        res.status(200).send(product);
-      })
-      .catch(next);
+    try {
+      const product = await productsService.find(id);
+      res.send(product);
+    } catch (error) {
+      next(error);
+    }
   },
 
-  create(req, res, next) {
+  async create(req, res, next) {
     const { title, price, description, categoryId } = req.body;
-    if (!price || !title) throw new HttpError('missing required parameter', 400);
-    productsService
-      .create({ title, price: Number(price), description, categoryId })
-      .then((product) => res.status(201).send(product))
-      .catch(next);
+    try {
+      const product = await productsService.create({
+        title,
+        price,
+        description,
+        categoryId,
+      });
+      res.status(201).send(product);
+    } catch (error) {
+      next(error);
+    }
   },
 
-  update(req, res, next) {
+  async update(req, res, next) {
     const { id } = req.params;
     const { title, price, description, categoryId } = req.body;
-    productsService
-      .udpate({ id, title, price: Number(price), description, categoryId })
-      .then((product) => res.status(201).send(product))
-      .catch(next);
+    try {
+      const product = await productsService.update({
+        id,
+        title,
+        price,
+        description,
+        categoryId,
+      });
+      res.status(201).send(product);
+    } catch (error) {
+      next(error);
+    }
   },
 
-  delete(req, res, next) {
+  async delete(req, res, next) {
     const { id } = req.params;
-    productsService
-      .delete({ id })
-      .then((product) => res.status(200).send(product))
-      .catch(next);
+    try {
+      const product = await productsService.delete(id);
+      res.status(200).send(product);
+    } catch (error) {
+      next(error);
+    }
   },
 };
