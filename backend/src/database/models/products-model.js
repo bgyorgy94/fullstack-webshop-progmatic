@@ -20,33 +20,26 @@ export default {
     });
   },
 
-  getAll({ orderBy, order, filter }) {
+  getAll({ orderBy, order, title, minPrice, maxPrice }) {
 
-    const sql1 = `SELECT p.id, p.title, p.price, p.description, c.name as category FROM products p JOIN categories c ON p.category_id = c.id`;
-    const sql2 = `SELECT p.id, p.title, p.price, p.description, c.name as category 
-            FROM products p 
-            JOIN categories c 
-            ON p.category_id = c.id
-            WHERE p.title LIKE '%${filter}%'
-            ORDER BY ${orderBy} ${order}`;
-    const sql3 = `SELECT p.id, p.title, p.price, p.description, c.name as category 
-            FROM products p 
-            JOIN categories c 
-            ON p.category_id = c.id
-            ORDER BY ${orderBy} ${order}`;
-    const sql4 = `SELECT p.id, p.title, p.price, p.description, c.name as category 
-            FROM products p 
-            JOIN categories c 
-            ON p.category_id = c.id
-            WHERE p.title LIKE '%${filter}%'`;
-             
-    let sql;
+    const sqlBase = `SELECT p.id, p.title, p.price, p.description, c.name as category FROM products p JOIN categories c ON p.category_id = c.id`;
+    const sqlFilterByTitle = ` title LIKE '%${title}%'`;
+    const sqlFilterByMinPrice = ` price >= ${minPrice}`;
+    const sqlFilterByMaxPrice = ` price  <= ${maxPrice}`;
+    const sqlOrder =  ` ORDER BY ${orderBy} ${order}`;
 
-    if (!filter && !orderBy && !order) sql = sql1;
-    else if (filter && orderBy && order) sql = sql2;
-    else if (!filter && orderBy && order) sql = sql3;
-    else if (filter && !orderBy && !order) sql = sql4;
-    
+    let sql = sqlBase;
+
+    if (title && minPrice && maxPrice) sql = sql + ' WHERE' + sqlFilterByTitle + ' AND' + sqlFilterByMinPrice + ' AND' + sqlFilterByMaxPrice;
+    else if (minPrice && maxPrice) sql = sql + ' WHERE' + sqlFilterByMinPrice + ' AND' + sqlFilterByMaxPrice;
+    else if (title && minPrice) sql = sql + ' WHERE' + sqlFilterByTitle + sqlFilterByMinPrice;
+    else if (title && maxPrice) sql = sql + ' WHERE' + sqlFilterByTitle + sqlFilterByMaxPrice;
+    else if (title) sql = sql + ' WHERE' + sqlFilterByTitle;
+    else if (minPrice) sql = sql + ' WHERE' + sqlFilterByMinPrice;
+    else if (maxPrice) sql = sql + ' WHERE' + sqlFilterByMaxPrice;
+
+    if (orderBy && order) sql += sqlOrder;
+
     return new Promise((resolve, reject) => {
         db.all(sql, (err, rows) => {
           if (err) reject(err);

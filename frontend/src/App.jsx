@@ -9,6 +9,7 @@ import { UserProvider } from './contexts/UserContext';
 import UserList from './pages/UserList';
 import Admin from './pages/Admin';
 import AdminProductList from './pages/AdminProductList/AdminProductList';
+import AdminAddProduct from './pages/AdminAddProduct/AdminAddProduct';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/products',
         element: <AdminProductList />
+      },
+      {
+        path: '/admin/addProduct',
+        element: <AdminAddProduct />
       }
     ],
   },

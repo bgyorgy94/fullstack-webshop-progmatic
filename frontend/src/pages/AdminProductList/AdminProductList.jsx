@@ -6,19 +6,22 @@ export default function AdminProductList() {
 
     const {
         productList,
-        getProducts
+        getProducts,
+        searchParams,
+        setSearchParams,
+        order
     } = useProducts();
 
     useEffect(() => {
         getProducts();
-    }, []);
+    }, [searchParams]);
     
     return (
         <Table responsive>
             <thead>
                 <tr>
-                    <th>Termék neve</th>
-                    <th>Termék ára</th>
+                    <th onClick={() => order('title')}>Termék neve</th>
+                    <th onClick={() => order('price')}>Termék ára</th>
                 </tr>
             </thead>
             <tbody>

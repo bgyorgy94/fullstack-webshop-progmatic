@@ -9,7 +9,7 @@ function useCategories() {
 
   const fetchCategories = async () => {
     try {
-      const response = await publicApi.get('/categories');
+      const response = await publicApi.get('api/categories');
       setCategories(response.data.categories);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -28,7 +28,7 @@ function useCategories() {
     }
 
     try {
-      await publicApi.post('/categories', { name: newCategory });
+      await publicApi.post('api/categories', { name: newCategory });
       setNewCategory('');
       fetchCategories();
     } catch (error) {
@@ -38,7 +38,7 @@ function useCategories() {
 
   const deleteCategory = async (id) => {
     try {
-      await publicApi.delete(`/categories/${id}`);
+      await publicApi.delete(`api/categories/${id}`);
       fetchCategories();
     } catch (error) {
       console.error('Error deleting category:', error);
@@ -47,7 +47,7 @@ function useCategories() {
 
   const loadCategory = async (id) => {
     try {
-      const response = await publicApi.get(`/categories/${id}`);
+      const response = await publicApi.get(`api/categories/${id}`);
       setSelectedCategory(response.data);
     } catch (error) {
       console.error('Error loading category:', error);
@@ -61,7 +61,7 @@ function useCategories() {
     }
 
     try {
-      await publicApi.put(`/categories/${selectedCategory.id}`, {
+      await publicApi.put(`api/categories/${selectedCategory.id}`, {
         name: editCategory,
       });
       setSelectedCategory(null);

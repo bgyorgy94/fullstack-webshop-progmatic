@@ -3,9 +3,9 @@ import HttpError from '../utils/httpError';
 
 export default {
   findAll(req, res, next) {
-    const {orderBy, order, filter} = req.query;
+    const {orderBy, order, title, minPrice, maxPrice} = req.query;
     productsService
-      .findAll({ orderBy, order, filter })
+      .findAll({ orderBy, order, title, minPrice, maxPrice })
       .then((products) => {
         res.send({ products });
       })
