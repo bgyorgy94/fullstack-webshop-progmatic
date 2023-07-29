@@ -1,20 +1,19 @@
-import Category from '../models/categories-model';
+import { Categories } from '../database/connection.js';
 
 export default {
   create(name) {
-    return Category.create({ name });
+    return Categories.create({ name });
   },
   delete(id) {
-    return Category.destroy({ where: { id } });
+    return Categories.destroy({ where: { id } });
   },
   update(id, name) {
-    return Category.update({ name }, { where: { id } });
+    return Categories.update({ name }, { where: { id } });
   },
   findAll() {
-    return Category.findAll();
+    return Categories.findAll();
   },
   findById(id) {
-    // findByPk megkeresi a megadott id-vel rendelkezo rekordot
-    return Category.findByPk(id);
+    return Categories.findByPk(id);
   },
 };

@@ -1,23 +1,32 @@
 import Sequelize from 'sequelize';
-import sequelize from '../connection';
-import Category from './categories-model';
+import Categories from './categories-model';
 
-const Product = sequelize.define('Product', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  title: Sequelize.STRING,
-  price: Sequelize.DECIMAL,
-  description: Sequelize.TEXT,
-  categoryId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: Category,
-      key: 'id',
+const ProductsModel = (sequelize, DataTypes) => {
+  const Products = sequelize.define(
+    'Products',
+    {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      title: Sequelize.STRING,
+      price: Sequelize.DECIMAL,
+      description: Sequelize.TEXT,
+      categoryId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: Categories,
+          key: 'id',
+        },
+      },
     },
-  },
-});
+    {
+      underscored: true,
+    },
+  );
 
-export default Product;
+  return Products;
+};
+
+export default ProductsModel;

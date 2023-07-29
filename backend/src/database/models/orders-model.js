@@ -1,49 +1,33 @@
 import Sequelize from 'sequelize';
-import sequelize from '../connection';
-import User from './users-model';
-import Product from './products-model';
+import Users from './users-model';
 
-const Order = sequelize.define('Order', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  userId: {
-    type: Sequelize.STRING,
-    references: {
-      model: User,
-      key: 'id',
+const OrdersModel = (sequelize, DataTypes) => {
+  const Orders = sequelize.define(
+    'Orders',
+    {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      userId: {
+        type: Sequelize.STRING,
+        references: {
+          model: Users,
+          key: 'id',
+        },
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+      },
     },
-  },
-  createdAt: {
-    type: Sequelize.DATE,
-    defaultValue: Sequelize.NOW,
-  },
-});
+    {
+      underscored: true,
+    },
+  );
 
-const OrderProduct = sequelize.define('OrderProduct', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  orderId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: Order,
-      key: 'id',
-    },
-  },
-  productId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: Product,
-      key: 'id',
-    },
-  },
-  quantity: Sequelize.INTEGER,
-  price: Sequelize.DECIMAL,
-});
+  return Orders;
+};
 
-export default { Order, OrderProduct };
+export default OrdersModel;

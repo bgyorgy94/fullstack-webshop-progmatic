@@ -1,23 +1,51 @@
 import Sequelize from 'sequelize';
+import UsersModel from './models/users-model';
+import ProductsModel from './models/products-model';
+import CategoriesModel from './models/categories-model';
+import OrdersModel from './models/orders-model';
+import OrderProductsModel from './models/orderproducts-model';
+import CartsModel from './models/carts-model';
+import CartProductsModel from './models/cartproducts-model';
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
   storage: './src/database/db/webshop.db',
+  logging: false,
 });
 
-// Immediately Invoked Function Expression (IIFE)
-// https://developer.mozilla.org/en-US/docs/Glossary/IIFE
-// new scope for async/await
-// + () at the end of the function to call it immediately, because top level code cannot be async
+const Users = UsersModel(sequelize, Sequelize);
+const Products = ProductsModel(sequelize, Sequelize);
+const Categories = CategoriesModel(sequelize, Sequelize);
+const Carts = CartsModel(sequelize, Sequelize);
+const Orders = OrdersModel(sequelize, Sequelize);
+const OrderProducts = OrderProductsModel(sequelize, Sequelize);
+const CartProducts = CartProductsModel(sequelize, Sequelize);
 
-(async () => {
-  try {
-    await sequelize.authenticate();
-    console.log('Db connection successful');
-  } catch (err) {
-    console.log('Database connection error!', err);
-    process.exit(1);
-  }
-})();
+Users.hasOne(Carts, { as: 'carts' });
+Carts.belongsTo(Users);
 
-export default sequelize;
+Users.hasMany(Orders);
+Orders.belongsTo(Users);
+
+Products.belongsToMany(Orders, { through: OrderProducts });
+Orders.belongsToMany(Products, { through: OrderProducts });
+
+Products.belongsTo(Categories, { as: 'categories', foreignKey: 'categoryId' });
+Categories.hasMany(Products, { as: 'products' });
+
+Products.belongsToMany(Carts, {
+  through: CartProducts,
+  as: 'carts',
+  foreignKey: 'ProductId',
+  otherKey: 'CartId',
+});
+Carts.belongsToMany(Products, {
+  through: CartProducts,
+  as: 'products',
+  foreignKey: 'CartId',
+  otherKey: 'ProductId',
+});
+
+sequelize.sync();
+
+export { sequelize, Users, Products, Categories, Carts, Orders, OrderProducts, CartProducts };

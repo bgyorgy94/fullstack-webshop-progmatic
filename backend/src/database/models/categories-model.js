@@ -1,17 +1,25 @@
 import Sequelize from 'sequelize';
-import sequelize from '../connection';
 
-const Category = sequelize.define('Category', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  name: {
-    type: Sequelize.TEXT,
-    allowNull: false,
-    unique: true,
-  },
-});
+const CategoriesModel = (sequelize, DataTypes) => {
+  const Categories = sequelize.define(
+    'Categories',
+    {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
+      name: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+        unique: true,
+      },
+    },
+    {
+      underscored: true,
+    },
+  );
+  return Categories;
+};
 
-export default Category;
+export default CategoriesModel;

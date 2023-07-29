@@ -1,5 +1,5 @@
 import ordersService from '../services/orders-service';
-import cartService from '../services/cart-service';
+import cartsService from '../services/carts-service';
 
 export default {
   async findAll(req, res, next) {

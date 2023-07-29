@@ -1,4 +1,4 @@
-import { User } from '../database/models';
+import { Users } from '../database/connection';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import HttpError from '../utils/httpError';
@@ -9,12 +9,12 @@ export default {
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(password, salt);
 
-    const user = await User.create({ email, passwordHash });
+    const user = await Users.create({ email, passwordHash });
     return user.toJSON();
   },
 
   async login({ email, password }) {
-    const user = await User.findOne({ where: { email } });
+    const user = await Users.findOne({ where: { email } });
     if (!user) {
       throw new HttpError('Invalid email or password', 400);
     }
