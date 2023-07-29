@@ -13,6 +13,7 @@ function useCategories() {
       setCategories(response.data.categories);
     } catch (error) {
       console.error('Error fetching categories:', error);
+      // toastify
     }
   };
 

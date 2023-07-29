@@ -26,6 +26,9 @@ export default function Home() {
       </button>
       <br />
       <br />
+      <Link to="/cart">Kosaram</Link>
+      <br />
+      <br />
       <Link to="/admin">Admin oldal</Link>
 
       {loginModalIsOpen && <Login/>}

@@ -4,9 +4,11 @@ import userVerify from '../middlewares/user-verify-middleware';
 
 const router = express.Router();
 
-router.get('/', userVerify, usersController.getAll);
-router.get('/:id', userVerify, usersController.find);
-router.patch('/:id', userVerify, usersController.update);
-router.delete('/:id', userVerify, usersController.delete);
+router.use(userVerify);
+
+router.get('/', usersController.getAll);
+router.get('/:id', usersController.find);
+router.patch('/:id', usersController.update);
+router.delete('/:id', usersController.delete);
 
 export default router;

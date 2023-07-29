@@ -2,6 +2,7 @@ import productsModel from './models/products-model';
 import categoriesModel from './models/categories-model';
 import usersModel from './models/users-model';
 import cartModel from './models/cart-model';
+import ordersModel from './models/orders-model';
 import db from './connection';
 
 export default function initDb() {
@@ -10,4 +11,6 @@ export default function initDb() {
   categoriesModel.createTable();
   usersModel.createTable();
   cartModel.createTable();
+  ordersModel.createTable();
+  ordersModel.createOrderProductsTable();
 }
