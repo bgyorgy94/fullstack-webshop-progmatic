@@ -5,11 +5,6 @@ const ProductsModel = (sequelize, DataTypes) => {
   const Products = sequelize.define(
     'Products',
     {
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
       title: Sequelize.STRING,
       price: Sequelize.DECIMAL,
       description: Sequelize.TEXT,

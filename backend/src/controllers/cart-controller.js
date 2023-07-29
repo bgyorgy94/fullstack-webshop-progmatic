@@ -5,7 +5,7 @@ export default {
     const { productId } = req.body;
     const userId = req.user.id;
     try {
-      const addedProduct = await cartsService.create({ productId, userId });
+      const addedProduct = await cartsService.create(userId, productId);
       res.send(addedProduct);
     } catch (err) {
       next(err);
@@ -15,11 +15,8 @@ export default {
   async getAll(req, res, next) {
     const userId = req.user.id;
     try {
-      const cartItems = await cartsService.getAll(userId);
-      res.send({
-        items: cartItems,
-        total: cartItems.map((item) => item.subtotal).reduce((acc, curr) => acc + curr, 0),
-      });
+      const cart = await cartsService.getAll(userId);
+      res.send(cart);
     } catch (err) {
       next(err);
     }

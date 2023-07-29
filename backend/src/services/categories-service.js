@@ -1,4 +1,4 @@
-import { Categories } from '../database/connection.js';
+import { Categories } from '../database/connection';
 
 export default {
   create(name) {

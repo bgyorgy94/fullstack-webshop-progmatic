@@ -3,7 +3,7 @@ import { Products, Categories } from '../database/connection';
 export default {
   async findAll() {
     const products = await Products.findAll({
-      attributes: ['title', 'price', 'description', 'categoryId'],
+      attributes: ['id', 'title', 'price', 'description', 'categoryId'],
       include: {
         model: Categories,
         attributes: ['name'],

@@ -21,14 +21,14 @@ const Orders = OrdersModel(sequelize, Sequelize);
 const OrderProducts = OrderProductsModel(sequelize, Sequelize);
 const CartProducts = CartProductsModel(sequelize, Sequelize);
 
-Users.hasOne(Carts, { as: 'carts' });
-Carts.belongsTo(Users);
+Users.hasOne(Carts, { as: 'cart' });
+Carts.belongsTo(Users, { as: 'user', foreignKey: 'userId' });
 
 Users.hasMany(Orders);
 Orders.belongsTo(Users);
 
 Products.belongsToMany(Orders, { through: OrderProducts });
-Orders.belongsToMany(Products, { through: OrderProducts });
+Orders.belongsToMany(Products, { as: 'products', through: OrderProducts });
 
 Products.belongsTo(Categories, { as: 'categories', foreignKey: 'categoryId' });
 Categories.hasMany(Products, { as: 'products' });
@@ -36,14 +36,10 @@ Categories.hasMany(Products, { as: 'products' });
 Products.belongsToMany(Carts, {
   through: CartProducts,
   as: 'carts',
-  foreignKey: 'ProductId',
-  otherKey: 'CartId',
 });
 Carts.belongsToMany(Products, {
   through: CartProducts,
   as: 'products',
-  foreignKey: 'CartId',
-  otherKey: 'ProductId',
 });
 
 sequelize.sync();

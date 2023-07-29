@@ -5,11 +5,6 @@ const OrdersModel = (sequelize, DataTypes) => {
   const Orders = sequelize.define(
     'Orders',
     {
-      id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
       userId: {
         type: Sequelize.STRING,
         references: {

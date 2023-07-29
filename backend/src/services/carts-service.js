@@ -1,14 +1,38 @@
-import { Carts } from '../database/connection';
-import { Products } from '../database/connection';
-import { Users } from '../database/connection';
+import { CartProducts, Carts, Products, Users } from '../database/connection';
 
 export default {
   async getAll(userId) {
     const userWithCart = await Users.findOne({
       where: { id: userId },
-      include: { model: Carts, as: 'carts', include: { model: Products, as: 'products' } },
+      include: {
+        model: Carts,
+        as: 'cart',
+        attributes: ['id', 'createdAt', 'updatedAt'],
+        include: [
+          {
+            model: Products,
+            as: 'products',
+            attributes: ['id', 'title', 'price', 'categoryId'],
+            through: { attributes: ['quantity'] },
+          },
+        ],
+      },
     });
-    return userWithCart && userWithCart.cart ? userWithCart.cart.map((item) => item.toJSON()) : [];
+
+    const cart = userWithCart ? userWithCart.toJSON().cart : null;
+
+    if (cart) {
+      cart.products = cart.products.map((product) => {
+        const { CartProducts, ...otherProductProps } = product;
+        return { ...otherProductProps, quantity: CartProducts.quantity };
+      });
+    }
+
+    const total = cart
+      ? cart.products.reduce((sum, item) => sum + item.price * item.quantity, 0)
+      : null;
+
+    return { cart, total };
   },
 
   async find(userId, productId) {
@@ -16,9 +40,24 @@ export default {
     return cartItem ? cartItem.toJSON() : null;
   },
 
-  async create(userId, productId, quantity) {
-    const cartItem = await Carts.create({ userId, productId, quantity });
-    return cartItem.toJSON();
+  async create(userId, productId) {
+    // find or create a cart for the user
+    const [cart] = await Carts.findOrCreate({ where: { userId } });
+
+    // find or create an entry in CartProducts
+    const [cartItem, created] = await CartProducts.findOrCreate({
+      where: { CartId: cart.id, ProductId: productId },
+    });
+
+    if (!created) {
+      cartItem.quantity += 1;
+      await cartItem.save();
+    }
+
+    // refreshes the cart instance to reflect the new association
+    await cart.reload();
+
+    return cart.toJSON();
   },
 
   async update(userId, productId, quantity) {

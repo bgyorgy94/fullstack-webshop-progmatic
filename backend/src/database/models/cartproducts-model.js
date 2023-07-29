@@ -7,7 +7,10 @@ const CartProductsModel = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    quantity: Sequelize.INTEGER,
+    quantity: {
+      type: Sequelize.INTEGER,
+      defaultValue: 1,
+    },
   });
 
   return CartProducts;
