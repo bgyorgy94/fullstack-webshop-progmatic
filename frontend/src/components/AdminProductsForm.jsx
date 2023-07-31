@@ -9,7 +9,7 @@ export default function AdminProductsForm(props) {
         initialValues: {
             title: props.product ? props.product.title : '',
             price: props.product ? props.product.price : null,
-            categoryId: props.product ? props.product.category_id : null,
+            categoryId: props.product ? props.product.category_id : 1,
             description: props.product ? props.product.description : ''
         },
         enableReinitialize: true,

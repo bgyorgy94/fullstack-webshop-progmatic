@@ -23,6 +23,10 @@ export default {
         return privatePostApi.put(`api/products/${id}`, formData)
     },
 
+    deleteProduct(id) {
+        return privateApi.delete(`api/products/${id}`)
+    },
+
     getProductById(id) {
         return publicApi.get(`api/products/${id}`)
     }

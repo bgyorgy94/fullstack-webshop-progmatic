@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useProducts from '../../hooks/useProducts';
 import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router-dom';
+import productsService from '../../services/products-service';
 
 export default function AdminProductList() {
 
     const navigate = useNavigate();
+    const [update, setUpdate] = useState(false);
 
     const {
         productList,
@@ -16,7 +18,8 @@ export default function AdminProductList() {
 
     useEffect(() => {
         getProducts();
-    }, [searchParams]);
+        setUpdate(false);
+    }, [searchParams, update]);
 
         return (
                 <Table responsive>
@@ -32,7 +35,10 @@ export default function AdminProductList() {
                                 <td>{product.title}</td>
                                 <td>{product.price}</td>
                                 <td><button onClick={() => navigate(`${product.id}/modify`)}>Módosítás</button></td>
-                                <td><button>Törlés</button></td>
+                                <td><button onClick={() => {
+                                    productsService.deleteProduct(product.id);
+                                    setUpdate(true);
+                                }}>Törlés</button></td>
                             </tr>
                         ))}
                     </tbody>
