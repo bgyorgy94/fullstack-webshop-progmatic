@@ -8,6 +8,7 @@ const ProductsModel = (sequelize) => {
       title: Sequelize.STRING,
       price: Sequelize.DECIMAL,
       description: Sequelize.TEXT,
+      //  imagepath: Sequelize.STRING,
       categoryId: {
         type: Sequelize.INTEGER,
         references: {
