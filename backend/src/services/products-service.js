@@ -13,8 +13,8 @@ export default {
     return productsModel.create({ title, price, description, categoryId });
   },
 
-  update(productId, title, price, description, categoryId) {
-    return productsModel.update(productId, title, price, description, categoryId);
+  update(payload) {
+    return productsModel.update(payload);
   },
 
   delete(productId) {

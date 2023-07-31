@@ -16,6 +16,7 @@ import UserOrder from './components/UserOrder';
 import { UserProvider } from './contexts/UserContext';
 import AdminProductList from './pages/AdminProductList/AdminProductList';
 import AdminAddProduct from './pages/AdminAddProduct/AdminAddProduct';
+import AdminModifyProduct from './pages/AdminModifyProduct/AdminModifyProduct';
 
 const router = createBrowserRouter([
   {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: '/admin/addProduct',
         element: <AdminAddProduct />
+      },
+      {
+        path: '/admin/products/:id/modify',
+        element: <AdminModifyProduct />
       }
       /* {
         path: '/admin/orders',

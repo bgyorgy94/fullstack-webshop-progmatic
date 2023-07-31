@@ -79,7 +79,7 @@ export default {
     });
   },
 
-  update(id, title, price, description, categoryId) {
+  update({ id, title, price, description, categoryId }) {
     const sql = `UPDATE products SET title = $title, price = $price, description = $description, category_id = $categoryId WHERE id = $id`;
     const params = {
       $id: id,
@@ -88,6 +88,8 @@ export default {
       $description: description,
       $categoryId: categoryId,
     };
+
+    console.log(params)
 
     return new Promise((resolve, reject) => {
       db.run(sql, params, (err) => {

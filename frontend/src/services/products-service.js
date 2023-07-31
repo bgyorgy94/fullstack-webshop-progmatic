@@ -17,5 +17,13 @@ export default {
 
     addProduct(formData) {
         return privatePostApi.post('api/products', formData)
+    },
+
+    modifyProduct(id, formData) {
+        return privatePostApi.put(`api/products/${id}`, formData)
+    },
+
+    getProductById(id) {
+        return publicApi.get(`api/products/${id}`)
     }
 }

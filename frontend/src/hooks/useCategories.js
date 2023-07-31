@@ -10,7 +10,7 @@ function useCategories() {
   const fetchCategories = async () => {
     try {
       const response = await publicApi.get('api/categories');
-      setCategories(response.data.categories);
+      setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
       // toastify

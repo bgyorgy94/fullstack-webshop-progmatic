@@ -37,7 +37,7 @@ export default {
   },
 
   async update(req, res, next) {
-    const { id } = req.params;
+    const id  = req.params.id;
     const { title, price, description, categoryId } = req.body;
     try {
       const product = await productsService.update({

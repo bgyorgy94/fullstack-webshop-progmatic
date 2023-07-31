@@ -2,15 +2,18 @@ import { useState } from 'react';
 import productsService from '../services/products-service';
 import { useSearchParams } from "react-router-dom";
 
-export default function useCategories() {
+export default function useProducts() {
     const [productList, setProductList] = useState([]);
     const [searchParams, setSearchParams] = useSearchParams();
     
     
     function getProducts() {
         productsService.getAllProducts(searchParams)
-        .then(resp => setProductList(resp.data.products))
+        .then(resp => {
+            setProductList(resp.data)
+        })
     };
+
 
     function order(orderBy) {
         let order;
