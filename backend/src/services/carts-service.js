@@ -23,8 +23,8 @@ export default {
 
     if (cart) {
       cart.products = cart.products.map((product) => {
-        const { CartProducts, ...otherProductProps } = product;
-        return { ...otherProductProps, quantity: CartProducts.quantity };
+        const { CartProducts: cartProductData, ...otherProductProps } = product;
+        return { ...otherProductProps, quantity: cartProductData.quantity };
       });
     }
 
@@ -41,10 +41,8 @@ export default {
   },
 
   async create(userId, productId) {
-    // find or create a cart for the user
     const [cart] = await Carts.findOrCreate({ where: { userId } });
 
-    // find or create an entry in CartProducts
     const [cartItem, created] = await CartProducts.findOrCreate({
       where: { CartId: cart.id, ProductId: productId },
     });
@@ -54,7 +52,6 @@ export default {
       await cartItem.save();
     }
 
-    // refreshes the cart instance to reflect the new association
     await cart.reload();
 
     return cart.toJSON();

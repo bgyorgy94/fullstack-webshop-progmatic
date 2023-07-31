@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 import Categories from './categories-model';
 
-const ProductsModel = (sequelize, DataTypes) => {
+const ProductsModel = (sequelize) => {
   const Products = sequelize.define(
     'Products',
     {

@@ -3,9 +3,10 @@ import ordersService from '../services/orders-service';
 export default {
   async findAll(req, res, next) {
     const userId = req.user.id;
+    const { limit, offset, productName } = req.query;
 
     try {
-      const orders = await ordersService.getAll(userId);
+      const orders = await ordersService.getAll(userId, limit, offset, productName);
       res.send({ orders });
       console.log('orders:', orders);
     } catch (err) {

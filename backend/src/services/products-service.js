@@ -1,8 +1,12 @@
+import { Op } from 'sequelize';
 import { Products, Categories } from '../database/connection';
 
 export default {
-  async findAll() {
+  async findAll(limit, offset, productName) {
     const products = await Products.findAll({
+      where: productName ? { title: { [Op.like]: `%${productName}%` } } : null,
+      limit: parseInt(limit || 10, 10),
+      offset: parseInt(offset || 0, 10),
       attributes: ['id', 'title', 'price', 'description', 'categoryId'],
       include: {
         model: Categories,

@@ -1,4 +1,4 @@
-const CartsModel = (sequelize, DataTypes) => {
+const CartsModel = (sequelize) => {
   const Carts = sequelize.define(
     'Carts',
     {},

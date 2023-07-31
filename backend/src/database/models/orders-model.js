@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 import Users from './users-model';
 
-const OrdersModel = (sequelize, DataTypes) => {
+const OrdersModel = (sequelize) => {
   const Orders = sequelize.define(
     'Orders',
     {

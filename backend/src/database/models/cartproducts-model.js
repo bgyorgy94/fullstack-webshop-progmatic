@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 
-const CartProductsModel = (sequelize, DataTypes) => {
+const CartProductsModel = (sequelize) => {
   const CartProducts = sequelize.define('CartProducts', {
     id: {
       type: Sequelize.INTEGER,

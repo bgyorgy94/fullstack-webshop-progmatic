@@ -1,6 +1,6 @@
 import app from './app';
 import { PORT } from './constants';
-import { sequelize } from '../src/database/connection';
+import { sequelize } from './database/connection';
 
 (async () => {
   try {

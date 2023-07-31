@@ -1,14 +1,18 @@
+import { Op } from 'sequelize';
 import { Orders, Categories, Carts, Products } from '../database/connection';
 import HttpError from '../utils/httpError';
 
 export default {
-  async getAll(userId) {
+  async getAll(userId, limit, offset, productName) {
     const orders = await Orders.findAll({
       where: { userId },
+      limit: parseInt(limit || 10, 10), // masodik parameter: radix (10-es szamrendszer), eslint hianyolta
+      offset: parseInt(offset || 0, 10),
       attributes: { exclude: ['UserId'] },
       include: {
         model: Products,
         as: 'products',
+        where: productName ? { title: { [Op.like]: `%${productName}%` } } : null,
         attributes: ['id', 'title'],
         through: { attributes: ['quantity', 'price'] },
         include: {
@@ -89,7 +93,7 @@ export default {
       },
     });
 
-    const products = cartProducts.toJSON().products;
+    const { products } = cartProducts.toJSON();
 
     if (!products || products?.length === 0) throw new HttpError('Cart is empty', 400);
 

@@ -1,7 +1,7 @@
-import { Users } from '../database/connection';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import HttpError from '../utils/httpError';
+import { Users } from '../database/connection';
 import { JWT_SECRET_KEY } from '../constants';
 
 export default {

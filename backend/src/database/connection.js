@@ -21,7 +21,7 @@ const Orders = OrdersModel(sequelize, Sequelize);
 const OrderProducts = OrderProductsModel(sequelize, Sequelize);
 const CartProducts = CartProductsModel(sequelize, Sequelize);
 
-Users.hasOne(Carts, { as: 'cart' });
+Users.hasOne(Carts, { as: 'cart', foreignKey: 'userId' });
 Carts.belongsTo(Users, { as: 'user', foreignKey: 'userId' });
 
 Users.hasMany(Orders);

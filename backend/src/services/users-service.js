@@ -1,5 +1,5 @@
-import Users from '../database/models/users-model';
 import nanoid from 'nanoid';
+import Users from '../database/models/users-model';
 
 export default {
   async find(id) {
@@ -18,8 +18,11 @@ export default {
     return { id };
   },
 
-  async getAll() {
-    const users = await Users.findAll();
+  async getAll(limit, offset) {
+    const users = await Users.findAll({
+      limit: parseInt(limit || 10, 10),
+      offset: parseInt(offset || 0, 10),
+    });
     return users.map((user) => user.toJSON());
   },
 

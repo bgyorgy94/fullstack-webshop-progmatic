@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 import { nanoid } from 'nanoid';
 
-const UsersModel = (sequelize, DataTypes) => {
+const UsersModel = (sequelize) => {
   const Users = sequelize.define(
     'Users',
     {
