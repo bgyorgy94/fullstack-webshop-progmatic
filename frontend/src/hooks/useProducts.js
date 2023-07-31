@@ -18,11 +18,22 @@ export default function useProducts() {
     function order(orderBy) {
         let order;
         const searchParamsOrder = searchParams.get('order');
+        const title = searchParams.get('title') ? searchParams.get('title') : '';
+        const minPrice = searchParams.get('minPrice') ? searchParams.get('minPrice') : '' ;
+        const maxPrice = searchParams.get('maxPrice') ? searchParams.get('maxPrice') : '';
         if (!searchParamsOrder) order = 'ASC'
         else if (searchParamsOrder === 'ASC') order = 'DESC'
         else if (searchParamsOrder === 'DESC') order = 'ASC';
 
-        setSearchParams((prev) => ({...prev, orderBy: orderBy, order: order}))
+        setSearchParams({orderBy: orderBy, order: order, title: title, minPrice: minPrice, maxPrice: maxPrice})
+    };
+
+    function filter(title, minPrice, maxPrice) {
+        setSearchParams({title: title, minPrice: minPrice, maxPrice: maxPrice})
+    };
+
+    function reset() {
+        setSearchParams();
     };
 
     return {
@@ -30,7 +41,9 @@ export default function useProducts() {
         getProducts,
         searchParams,
         setSearchParams,
-        order
+        order,
+        filter,
+        reset
     };
 
 }

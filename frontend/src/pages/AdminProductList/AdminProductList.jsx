@@ -3,6 +3,7 @@ import useProducts from '../../hooks/useProducts';
 import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router-dom';
 import productsService from '../../services/products-service';
+import Filter from '../../components/Filter';
 
 export default function AdminProductList() {
 
@@ -22,6 +23,8 @@ export default function AdminProductList() {
     }, [searchParams, update]);
 
         return (
+            <>
+                <Filter />
                 <Table responsive>
                     <thead>
                         <tr>
@@ -43,5 +46,6 @@ export default function AdminProductList() {
                         ))}
                     </tbody>
                 </Table>
+            </>
         )
     }
