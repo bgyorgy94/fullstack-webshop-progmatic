@@ -2,11 +2,12 @@ import { Op } from 'sequelize';
 import { Products, Categories } from '../database/connection';
 
 export default {
-  async findAll(limit, offset, productName, minPrice, maxPrice, orderBy, order) {
+  async findAll(limit = 10, page = 1, title, minPrice, maxPrice, orderBy, order) {
+    const offset = (page - 1) * limit;
     const whereCondition = {};
 
-    if (productName) {
-      whereCondition.title = { [Op.like]: `%${productName}%` };
+    if (title) {
+      whereCondition.title = { [Op.like]: `%${title}%` };
     }
 
     if (minPrice && maxPrice) {
@@ -25,8 +26,8 @@ export default {
 
     const products = await Products.findAll({
       where: whereCondition,
-      limit: parseInt(limit || 10, 10),
-      offset: parseInt(offset || 0, 10),
+      limit: parseInt(limit, 10),
+      offset: parseInt(offset, 10),
       order: orderCondition,
       attributes: ['id', 'title', 'price', 'description', 'categoryId'],
       include: {
@@ -35,7 +36,18 @@ export default {
         as: 'categories',
       },
     });
-    return products.map((product) => product.toJSON());
+
+    const totalCount = await Products.count({ where: whereCondition });
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const productsJSON = products.map((product) => product.toJSON());
+
+    return {
+      products: productsJSON,
+      totalPages,
+      totalCount,
+      currentPage: page,
+    };
   },
 
   async find(id) {

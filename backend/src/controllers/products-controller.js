@@ -2,12 +2,12 @@ import productsService from '../services/products-service';
 
 export default {
   async findAll(req, res, next) {
-    const { limit, offset, productName, minPrice, maxPrice, orderBy, order } = req.query;
+    const { limit, page, title, minPrice, maxPrice, orderBy, order } = req.query;
     try {
       const products = await productsService.findAll(
         limit,
-        offset,
-        productName,
+        page,
+        title,
         minPrice,
         maxPrice,
         orderBy,

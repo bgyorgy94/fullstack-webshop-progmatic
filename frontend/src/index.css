@@ -40,11 +40,41 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #1b1b1b;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.admin-link {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  color: #1b1b1b;
+  font-size: 1.2rem;
+}
+
+.admin-link:hover {
+  color: #717171;
+}
+
+.w-70 {
+  width: 70%;
+}
+
+.text-large {
+  font-size: 1.5rem;
+}
+
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+.sort-arrow {
+  display: inline-block;
+  width: 15px;
 }
 
 @media (prefers-color-scheme: light) {
