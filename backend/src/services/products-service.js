@@ -2,11 +2,32 @@ import { Op } from 'sequelize';
 import { Products, Categories } from '../database/connection';
 
 export default {
-  async findAll(limit, offset, productName) {
+  async findAll(limit, offset, productName, minPrice, maxPrice, orderBy, order) {
+    const whereCondition = {};
+
+    if (productName) {
+      whereCondition.title = { [Op.like]: `%${productName}%` };
+    }
+
+    if (minPrice && maxPrice) {
+      whereCondition.price = { [Op.between]: [minPrice, maxPrice] };
+    } else if (minPrice) {
+      whereCondition.price = { [Op.gte]: minPrice };
+    } else if (maxPrice) {
+      whereCondition.price = { [Op.lte]: maxPrice };
+    }
+
+    const orderCondition = [];
+
+    if (orderBy && order) {
+      orderCondition.push([orderBy, order]);
+    }
+
     const products = await Products.findAll({
-      where: productName ? { title: { [Op.like]: `%${productName}%` } } : null,
+      where: whereCondition,
       limit: parseInt(limit || 10, 10),
       offset: parseInt(offset || 0, 10),
+      order: orderCondition,
       attributes: ['id', 'title', 'price', 'description', 'categoryId'],
       include: {
         model: Categories,

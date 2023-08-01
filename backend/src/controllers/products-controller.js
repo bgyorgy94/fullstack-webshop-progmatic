@@ -2,9 +2,17 @@ import productsService from '../services/products-service';
 
 export default {
   async findAll(req, res, next) {
-    const { limit, offset, productName } = req.query;
+    const { limit, offset, productName, minPrice, maxPrice, orderBy, order } = req.query;
     try {
-      const products = await productsService.findAll(limit, offset, productName);
+      const products = await productsService.findAll(
+        limit,
+        offset,
+        productName,
+        minPrice,
+        maxPrice,
+        orderBy,
+        order,
+      );
       res.send(products);
     } catch (error) {
       next(error);
@@ -37,7 +45,7 @@ export default {
   },
 
   async update(req, res, next) {
-    const { id } = req.params;
+    const id = req.params.id;
     const { title, price, description, categoryId } = req.body;
     try {
       const product = await productsService.update({
