@@ -29,7 +29,7 @@ export default {
       limit: parseInt(limit, 10),
       offset: parseInt(offset, 10),
       order: orderCondition,
-      attributes: ['id', 'title', 'price', 'description', 'categoryId'],
+      attributes: ['id', 'title', 'price', 'description', 'categoryId', 'imagePath'],
       include: {
         model: Categories,
         attributes: ['name'],

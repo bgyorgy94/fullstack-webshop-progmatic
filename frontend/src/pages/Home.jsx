@@ -26,6 +26,9 @@ export default function Home() {
       </button>
       <br />
       <br />
+      <Link to="/products">Termékek</Link>
+      <br />
+      <br />
       <Link to="/cart">Kosaram</Link>
       <br />
       <br />

@@ -19,6 +19,7 @@ import { RegisterModalProvider } from './contexts/RegisterModalContext';
 import AdminProductList from './pages/AdminProductList/AdminProductList';
 import AdminAddProduct from './pages/AdminAddProduct/AdminAddProduct';
 import AdminModifyProduct from './pages/AdminModifyProduct/AdminModifyProduct';
+import ProductList from './pages/ProductList/ProductList';
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
     path: '/categories',
     element: <Categories />,
     children: [{ path: ':categoryId', element: <Category /> }],
+  },
+  {
+    path: '/products',
+    element: <ProductList />
   },
   {
     path: '/admin',
