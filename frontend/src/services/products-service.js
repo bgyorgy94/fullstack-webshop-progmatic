@@ -1,6 +1,5 @@
 import privateApi from '../api/privateApi';
 import publicApi from '../api/publicApi';
-import privatePostApi from '../api/privatePostApi';
 
 export default {
   getAllProducts(params) {
@@ -17,11 +16,11 @@ export default {
   },
 
   addProduct(formData) {
-    return privatePostApi.post('api/products', formData);
+    return privateApi.post('api/products', formData);
   },
 
   modifyProduct(id, formData) {
-    return privatePostApi.put(`api/products/${id}`, formData);
+    return privateApi.put(`api/products/${id}`, formData);
   },
 
   deleteProduct(id) {

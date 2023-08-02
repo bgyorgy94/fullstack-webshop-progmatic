@@ -1,43 +1,43 @@
-import privatePostApi from '../api/privatePostApi';
+import { objectToFormData } from '../utils';
+import privateApi from '../api/privateApi';
 import { useFormik } from 'formik';
-import { useState } from 'react';
 import useCategories from '../hooks/useCategories';
 
-export default function AdminProductsForm(props) {
-  const [image, setImage] = useState(null);
+export default function AdminProductsForm({ product }) {
   const { categories } = useCategories();
   const formik = useFormik({
     initialValues: {
-      title: props.product ? props.product.title : '',
-      price: props.product ? props.product.price : null,
-      categoryId: props.product ? props.product.category_id : 1,
-      description: props.product ? props.product.description : '',
-      file: null,
+      title: product ? product.title : '',
+      price: product ? product.price : '',
+      categoryId: product ? product.category_id : 1,
+      description: product ? product.description : '',
+      productImg: null,
     },
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
-      const formData = new FormData();
-      formData.append('file', image);
-      formData.append('title', values.title);
-      formData.append('price', values.price);
-      formData.append('description', values.description);
-      formData.append('categoryId', values.categoryId);
+      const formData = objectToFormData(values);
+      console.log('formData:', Object.fromEntries(formData.entries()));
 
-      if (props.product) {
-        formData.append('productId', props.product.id);
+      if (product?.id) {
+        await privateApi.put('/api/products', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } else {
+        await privateApi.post('/api/products', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
       }
 
-      await privatePostApi.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
       resetForm();
     },
   });
 
-  const handleImageChange = (event) => {
-    setImage(event.target.files[0]);
+  const handleFileChange = (event) => {
+    formik.setFieldValue(event.target.name, event.target.files[0]);
   };
 
   return (
@@ -87,7 +87,14 @@ export default function AdminProductsForm(props) {
         />
       </p>
       <p>
-        Image: <input type="file" id="file" name="file" onChange={handleImageChange} />
+        Image:{' '}
+        <input
+          type="file"
+          id="file"
+          name="productImg"
+          accept="image/jpeg"
+          onChange={handleFileChange}
+        />
       </p>
       <button type="submit">Küldés</button>
     </form>

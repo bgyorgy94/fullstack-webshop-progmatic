@@ -55,13 +55,13 @@ export default {
     return product ? product.toJSON() : null;
   },
 
-  async create({ title, price, description, categoryId }) {
-    const product = await Products.create({ title, price, description, categoryId });
+  async create({ title, price, description, categoryId, imagePath }) {
+    const product = await Products.create({ title, price, description, categoryId, imagePath });
     return product.toJSON();
   },
 
-  async update(id, title, price, description, categoryId) {
-    await Products.update({ title, price, description, categoryId }, { where: { id } });
+  async update({ id, title, price, description, categoryId, imagePath }) {
+    await Products.update({ title, price, description, categoryId, imagePath }, { where: { id } });
     const updatedProduct = await Products.findByPk(id);
     return updatedProduct.toJSON();
   },

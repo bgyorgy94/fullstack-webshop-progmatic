@@ -4,9 +4,11 @@ import HttpError from '../utils/httpError';
 
 export default {
   async getAll(userId, limit, offset, productName) {
+    console.log('Backend Params:', { userId, limit, offset, productName });
+
     const orders = await Orders.findAll({
       where: { userId },
-      limit: parseInt(limit || 10, 10), // masodik parameter: radix (10-es szamrendszer), eslint hianyolta
+      limit: parseInt(limit || 10, 10),
       offset: parseInt(offset || 0, 10),
       attributes: { exclude: ['UserId'] },
       include: {
