@@ -14,9 +14,12 @@ import Cart from './pages/Cart/Cart';
 import UserOrders from './pages/UserOrders';
 import UserOrder from './components/UserOrder';
 import { UserProvider } from './contexts/UserContext';
+import { LoginModalProvider } from './contexts/LoginModalContext';
+import { RegisterModalProvider } from './contexts/RegisterModalContext';
 import AdminProductList from './pages/AdminProductList/AdminProductList';
 import AdminAddProduct from './pages/AdminAddProduct/AdminAddProduct';
 import AdminModifyProduct from './pages/AdminModifyProduct/AdminModifyProduct';
+import './style.scss';
 
 const router = createBrowserRouter([
   {
@@ -76,12 +79,18 @@ const router = createBrowserRouter([
   },
 ]);
 
+
 function App() {
   return (
     <UserProvider>
       <CartProvider>
         <RouterProvider router={router} />
       </CartProvider>
+      <LoginModalProvider>
+        <RegisterModalProvider>
+        <RouterProvider router={router} />
+      </RegisterModalProvider>
+      </LoginModalProvider>
     </UserProvider>
   );
 }
