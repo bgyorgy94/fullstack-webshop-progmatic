@@ -37,6 +37,42 @@ export default function useProducts() {
     });
   }
 
+  function userOrderBy(newSorting) {
+    let order;
+    let orderBy;
+    const title = searchParams.get('title') ? searchParams.get('title') : '';
+    const minPrice = searchParams.get('minPrice') ? searchParams.get('minPrice') : '';
+    const maxPrice = searchParams.get('maxPrice') ? searchParams.get('maxPrice') : '';
+
+      if (newSorting === "priceAsc") {
+        orderBy = 'price' 
+        order = 'ASC';
+
+    } else if (newSorting === "priceDesc") {
+        orderBy = 'price' 
+        order = 'DESC';
+
+    } else if (newSorting === "titleAsc") {
+        orderBy = 'title' 
+        order = 'ASC';
+
+    } else if (newSorting === "titleDesc") {
+        orderBy = 'title' 
+        order = 'DESC';
+    } else {
+        orderBy = '';
+        order = '';
+    }
+
+    setSearchParams({
+      orderBy: orderBy,
+      order: order,
+      title: title,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+    });
+  }
+
   function setPage(page) {
     setCurrentPage(page);
   }
@@ -60,5 +96,6 @@ export default function useProducts() {
     filter,
     reset,
     setPage,
+    userOrderBy
   };
 }

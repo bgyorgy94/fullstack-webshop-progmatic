@@ -2,10 +2,14 @@ import { useEffect } from 'react';
 import useProducts from '../../hooks/useProducts'
 import API_URL from '../../constants';
 import '../ProductList/productList.scss'
+import Filter from '../../components/Filter/Filter';
+import DropDownSorter from '../../components/DropDownSorter/DropDownSorter';
+import useCart from '../../hooks/useCart';
 
 export default function ProductList() {
 
     const { productList, getProducts, searchParams, order, currentPage, setPage, totalPages } = useProducts();
+    const { increase } = useCart();
 
     useEffect(() => {
         getProducts();
@@ -19,10 +23,10 @@ export default function ProductList() {
             <div className='row align-items-start'>
                 <div className='col-md-2'>
                     <div className='my-2'>
-                        <p>DropDownSorter</p>
+                        <DropDownSorter />
                     </div>
                     <div>
-                        <p>Filter</p>
+                        <Filter />
                     </div>
                 </div>
                 <div className='col-md-10'>
@@ -38,7 +42,7 @@ export default function ProductList() {
                                                 <h6 className='card-subtitle'>{product.price} Ft</h6>
                                             </div>
                                             <div className='container btn-container'>
-                                                <button type='button' className='btn btn-primary card-btn'>Kosárba</button>
+                                                <button type='button' className='btn btn-primary card-btn' onClick={() => increase(product)}>Kosárba</button>
                                             </div>
                                         </div>
                                     </div>
