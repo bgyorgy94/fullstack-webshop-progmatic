@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 import { Products, Categories } from '../database/connection';
 
 export default {
-  async findAll(limit = 10, page = 1, title, minPrice, maxPrice, orderBy, order) {
+  async findAll(limit = 9, page = 1, title, minPrice, maxPrice, orderBy, order) {
     const offset = (page - 1) * limit;
     const whereCondition = {};
 

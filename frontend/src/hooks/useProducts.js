@@ -75,6 +75,8 @@ export default function useProducts() {
 
   function setPage(page) {
     setCurrentPage(page);
+    searchParams.set('page', page);
+    setSearchParams(searchParams);
   }
 
   function filter(title, minPrice, maxPrice) {

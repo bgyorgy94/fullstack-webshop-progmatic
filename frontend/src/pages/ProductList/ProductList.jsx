@@ -5,10 +5,11 @@ import '../ProductList/productList.scss'
 import Filter from '../../components/Filter/Filter';
 import DropDownSorter from '../../components/DropDownSorter/DropDownSorter';
 import useCart from '../../hooks/useCart';
+import Pager from '../../components/Pager/Pager';
 
 export default function ProductList() {
 
-    const { productList, getProducts, searchParams, order, currentPage, setPage, totalPages } = useProducts();
+    const { productList, getProducts, searchParams, setSearchParams, order, currentPage, setPage, totalPages } = useProducts();
     const { increase } = useCart();
 
     useEffect(() => {
@@ -52,9 +53,7 @@ export default function ProductList() {
                     </div>
                 </div>
             </div>
+        <Pager totalPages={totalPages} searchParams={searchParams} setSearchParams={setSearchParams} currentPage={currentPage} setPage={setPage}/>
         </div>
-
-
-
     )
 }
