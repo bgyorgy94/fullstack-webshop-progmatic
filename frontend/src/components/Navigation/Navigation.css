@@ -1,0 +1,35 @@
+.dropdown-menu {
+  max-height: 0;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-2em);
+  transition: visibility 0s 0.5s, opacity 0.5s linear, transform 0.5s;
+  border-bottom: 1px solid black;
+}
+
+.dropdown-menu.open {
+  max-height: none;
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition: visibility 0s, opacity 0.5s linear, transform 0.5s;
+}
+
+.btn-loginModal {
+  background-color: transparent;
+  border: none;
+}
+
+.btn-loginModal:hover {
+  color: rgb(0, 0, 0, 0.6);
+}
+
+.login-container {
+  display: flex;
+
+  justify-content: flex-end;
+}
+
+.login-container p {
+  margin-bottom: 0;
+}

@@ -9,6 +9,7 @@ import UserList from './pages/UserList';
 import Admin from './pages/Admin';
 import { CartProvider } from './contexts/CartContext';
 import Cart from './pages/Cart/Cart';
+import Layout from './components/Layout';
 // import AdminOrderList from './pages/AdminOrderList';
 // import AdminOrder from './components/AdminOrder';
 import UserOrders from './pages/UserOrders';
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/products',
-    element: <ProductList />
+    element: <ProductList />,
   },
   {
     path: '/admin',
@@ -93,7 +94,9 @@ function App() {
       <CartProvider>
         <LoginModalProvider>
           <RegisterModalProvider>
-            <RouterProvider router={router} />
+            <Layout>
+              <RouterProvider router={router} />
+            </Layout>
           </RegisterModalProvider>
         </LoginModalProvider>
       </CartProvider>

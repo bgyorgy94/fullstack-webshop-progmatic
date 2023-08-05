@@ -1,4 +1,4 @@
-$primary: black;
+$primary: rgb(0, 0, 0);
 $primary-hover: rgba(0, 0, 0, 0.808);
 $primary-outline-hover: rgba(240, 240, 240, 0.808);
 
@@ -6,22 +6,53 @@ $primary-outline-hover: rgba(240, 240, 240, 0.808);
 @import 'bootstrap/scss/bootstrap.scss';
 
 body {
-    font-family: "SuisseIntl-Regular";
+  font-family: 'SuisseIntl-Regular';
 }
 
 .btn-primary {
-    border-radius: 0% !important;
+  border-radius: 0% !important;
 }
 
 .btn-primary:hover {
-    background-color: $primary-hover;
+  background-color: $primary-hover;
 }
 
 .btn-outline-primary {
-    border-radius: 0% !important;
+  border-radius: 0% !important;
 }
 
 .btn-outline-primary:hover {
-    background-color: $primary-outline-hover;
-    color: black;
+  background-color: $primary-outline-hover;
+  color: black;
+}
+.btn-light {
+  background-color: white;
+  color: black;
+  border-radius: 0% !important;
+  border: none;
+}
+
+.btn-light:hover {
+  background-color: rgb(255, 255, 255, 0.7);
+  color: black;
+  border: none;
+}
+.btn-light:active,
+.btn-light:focus {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+.no-margin {
+  margin: 0;
+}
+.no-padding {
+  padding: 0;
+}
+
+@media (max-width: 991px) {
+  .center-content {
+    justify-content: center !important;
+  }
 }
