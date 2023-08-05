@@ -1,0 +1,30 @@
+.dropdown:hover>.dropdown-menu {
+    display: block;
+  }
+  
+  .dropdown>.dropdown-toggle:active {
+      pointer-events: none;
+  }
+  .dropdown {
+    position:static !important;
+}
+.dropdown-menu {
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15)!important;
+    margin-top:0px !important;
+    width:100% !important;
+}
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 0,
+  'opsz' 24
+}
+.link-item{
+    color: rgb(71, 72, 72);
+    font-weight:300
+}
+.nav-item:hover .link-item:hover{
+    color: rgb(0, 0, 0);
+    font-weight:400
+}
