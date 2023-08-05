@@ -14,5 +14,10 @@ export default function useLogin() {
     });
   }
 
-  return { login };
+  function logout() {
+    setUser({});
+    localStorage.removeItem('access_token');
+  }
+
+  return { login, logout };
 }

@@ -1,34 +1,38 @@
-import { Container, Dropdown, Nav, Navbar } from 'react-bootstrap';
+import { Image, Container, Dropdown, Nav, Navbar } from 'react-bootstrap';
 import { useState, useContext } from 'react';
-import { FaUser } from 'react-icons/fa';
 import { UserContext } from '../../contexts/UserContext';
-import { LoginModalContext } from '../../contexts/LoginModalContext';
-import { RegisterModalContext } from '../../contexts/RegisterModalContext';
-import Login from '../../pages/LoginRegister/Login';
-import RegisterUser from '../../pages/LoginRegister/RegisterUser';
+import { FaUser } from 'react-icons/fa';
+import AuthModal from '../AuthModal/AuthModal';
+import useLogin from '../../hooks/useLogin';
 import './Navigation.scss';
 
 export default function Navigation() {
   const [activeMenu, setActiveMenu] = useState('');
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [user] = useContext(UserContext);
-  const [loginModalIsOpen, setLoginModalIsOpen] = useContext(LoginModalContext);
-  const [registerModalIsOpen] = useContext(RegisterModalContext);
+  const { logout } = useLogin();
 
   const menus = {
     men: ['Trousers', 'Jeans', 'Shirts'],
     women: ['Dresses', 'Jeans', 'Shirts'],
   };
 
-  const loginButton = () => {
-    setLoginModalIsOpen(true);
-  };
-
   return (
     <div onMouseLeave={() => setActiveMenu('')}>
-      <Navbar bg="light" expand="lg">
+      <Navbar
+        sticky="top"
+        bg="light"
+        className={!activeMenu ? 'navbar' : 'navbar no-border'}
+        expand="lg"
+      >
         <Container fluid className="d-flex flex-wrap">
           <Navbar.Brand className="order-1 order-lg-2 m-md-3 m-lg-0" href="#home">
-            Brand
+            <Image
+              src="src/assets/solapparellogo2.svg"
+              alt="Sol Apparel Logo"
+              width={120}
+              height={60}
+            />
           </Navbar.Brand>
           <Navbar.Toggle
             aria-controls="navbarScroll"
@@ -40,10 +44,13 @@ export default function Navigation() {
               style={{ maxHeight: '100px' }}
               navbarScroll
             >
-              <Nav.Link className="text-dark" onMouseEnter={() => setActiveMenu('men')}>
+              <Nav.Link
+                className="custom-link-hover ms-4"
+                onMouseEnter={() => setActiveMenu('men')}
+              >
                 MEN
               </Nav.Link>
-              <Nav.Link className="text-dark" onMouseEnter={() => setActiveMenu('women')}>
+              <Nav.Link className="custom-link-hover" onMouseEnter={() => setActiveMenu('women')}>
                 WOMEN
               </Nav.Link>
             </Nav>
@@ -52,23 +59,31 @@ export default function Navigation() {
             <Container className="d-flex justify-content-lg-end justify-content-center no-padding align-items-center text-center">
               <button
                 type="button"
-                className="btn-loginModal"
-                onClick={loginButton}
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
+                className="btn-loginModal me-2"
+                onClick={() => setShowAuthModal(true)}
               >
                 <FaUser />
               </button>
-              {user ? <p className="no-margin">Hi, {user.email}!</p> : ''}
+              {user ? (
+                <>
+                  <p style={{ color: 'black' }} className="no-margin">
+                    Hi, {user.email}!
+                  </p>{' '}
+                  <button type="button" className="btn-logout ms-2" onClick={() => logout()}>
+                    Logout
+                  </button>
+                </>
+              ) : (
+                ''
+              )}
 
-              {loginModalIsOpen && <Login />}
-              {registerModalIsOpen && <RegisterUser />}
+              <AuthModal show={showAuthModal} handleClose={() => setShowAuthModal(false)} />
             </Container>
           </Navbar.Collapse>
         </Container>
       </Navbar>
       <div className={`menu-wrapper bg-light ${activeMenu ? 'show' : ''}`}>
-        <Dropdown.Menu className="border-top-0 bg-light text-dark" show={!!activeMenu}>
+        <Dropdown.Menu className="border-top-0 border-bot-1 bg-light text-dark" show={!!activeMenu}>
           {menus[activeMenu]?.map((item) => (
             <Dropdown.Item key={item}>{item}</Dropdown.Item>
           ))}

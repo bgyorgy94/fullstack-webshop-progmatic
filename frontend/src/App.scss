@@ -51,6 +51,31 @@ body {
   padding: 0;
 }
 
+.border-bot-1 {
+  border-bottom: 1px solid black;
+  border-radius: 0%;
+}
+
+.navbar {
+  border-bottom: 1px solid black;
+  transition: border-bottom 0.5s linear 0.5s;
+}
+
+.navbar.no-border {
+  border-bottom: none;
+  transition: border-bottom 0.5s ease 0.5s;
+}
+
+.custom-link-hover {
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  color: black;
+}
+
+.custom-link-hover:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
+
 @media (max-width: 991px) {
   .center-content {
     justify-content: center !important;
