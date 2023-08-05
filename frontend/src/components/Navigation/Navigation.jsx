@@ -1,4 +1,4 @@
-import { Col, Container, Nav, Navbar, Row } from 'react-bootstrap';
+import { Container, Dropdown, Nav, Navbar } from 'react-bootstrap';
 import { useState, useContext } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { UserContext } from '../../contexts/UserContext';
@@ -6,13 +6,13 @@ import { LoginModalContext } from '../../contexts/LoginModalContext';
 import { RegisterModalContext } from '../../contexts/RegisterModalContext';
 import Login from '../../pages/LoginRegister/Login';
 import RegisterUser from '../../pages/LoginRegister/RegisterUser';
-import './Navigation.css';
+import './Navigation.scss';
 
 export default function Navigation() {
   const [activeMenu, setActiveMenu] = useState('');
   const [user] = useContext(UserContext);
   const [loginModalIsOpen, setLoginModalIsOpen] = useContext(LoginModalContext);
-  const [registerModalIsOpen, setRegisterModalIsOpen] = useContext(RegisterModalContext);
+  const [registerModalIsOpen] = useContext(RegisterModalContext);
 
   const menus = {
     men: ['Trousers', 'Jeans', 'Shirts'],
@@ -24,8 +24,8 @@ export default function Navigation() {
   };
 
   return (
-    <div>
-      <Navbar bg="light" expand="lg" onMouseLeave={() => setActiveMenu('')}>
+    <div onMouseLeave={() => setActiveMenu('')}>
+      <Navbar bg="light" expand="lg">
         <Container fluid className="d-flex flex-wrap">
           <Navbar.Brand className="order-1 order-lg-2 m-md-3 m-lg-0" href="#home">
             Brand
@@ -40,10 +40,10 @@ export default function Navigation() {
               style={{ maxHeight: '100px' }}
               navbarScroll
             >
-              <Nav.Link href="#action1" onMouseEnter={() => setActiveMenu('men')}>
+              <Nav.Link className="text-dark" onMouseEnter={() => setActiveMenu('men')}>
                 MEN
               </Nav.Link>
-              <Nav.Link href="#action2" onMouseEnter={() => setActiveMenu('women')}>
+              <Nav.Link className="text-dark" onMouseEnter={() => setActiveMenu('women')}>
                 WOMEN
               </Nav.Link>
             </Nav>
@@ -67,16 +67,12 @@ export default function Navigation() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <div className={`dropdown-menu ${activeMenu ? 'open' : ''}`}>
-        <Container>
-          <Row>
-            {menus[activeMenu]?.map((item, index) => (
-              <Col key={index} className="p-2">
-                <a href="#">{item}</a>
-              </Col>
-            ))}
-          </Row>
-        </Container>
+      <div className={`menu-wrapper bg-light ${activeMenu ? 'show' : ''}`}>
+        <Dropdown.Menu className="border-top-0 bg-light text-dark" show={!!activeMenu}>
+          {menus[activeMenu]?.map((item) => (
+            <Dropdown.Item key={item}>{item}</Dropdown.Item>
+          ))}
+        </Dropdown.Menu>
       </div>
     </div>
   );
