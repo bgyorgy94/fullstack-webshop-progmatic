@@ -5,47 +5,54 @@ import cartService from '../services/cart-service';
 export default function useCart() {
   const [cart, setCart] = useContext(CartContext);
 
-  const cartItems = [...cart.items];
+  const cartItems = cart.cart;
   let cartTotal = cart.total;
 
-  function increase(productId) {
-    cartService.addToCart(productId);
-    const index = cartItems.findIndex((item) => item.id === productId);
-    cartItems[index].quantity++;
-    cartItems[index].subtotal = cartItems[index].quantity * cartItems[index].price;
-    cartTotal += cartItems[index].price;
+  function increase(product) {
+    const index = cartItems.products.findIndex((item) => item.id === product.id);
+    cartService.addToCart(product.id);
 
-    setCart({ ...cart, items: cartItems, total: cartTotal });
+    if (index === -1) {
+      const newProduct = {...product, quantity: 1}
+      cartItems.products.push(newProduct);
+      cartTotal += product.price;
+    } else {
+      cartItems.products[index].quantity++;
+      cartTotal += cartItems.products[index].price;
+    }
+
+    setCart({...cart, cart: cartItems, total: cartTotal})
   }
 
   function decrease(productId) {
     cartService.removeFromCart(productId);
-    const index = cartItems.findIndex((item) => item.id === productId);
-    if (cartItems[index].quantity > 1) {
-      cartItems[index].quantity--;
-      cartItems[index].subtotal = cartItems[index].quantity * cartItems[index].price;
-      cartTotal -= cartItems[index].price;
+    const index = cartItems.products.findIndex((item) => item.id === productId);
+    if (cartItems.products[index].quantity > 1) {
+      cartItems.products[index].quantity--;
+      cartTotal -= cartItems.products[index].price;
     } else {
-      cartTotal -= cartItems[index].price;
-      delete cartItems[index];
+      cartTotal -= cartItems.products[index].price;
+      delete cartItems.products[index];
     }
 
-    setCart({ ...cart, items: cartItems, total: cartTotal });
+    setCart({ ...cart, cart: cartItems, total: cartTotal });
   }
 
   function remove(productId) {
     cartService.instantRemoveFromCart(productId);
-    const index = cartItems.findIndex((item) => item.id === productId);
-    cartTotal -= cartItems[index].price * cartItems[index].quantity;
-    delete cartItems[index];
+    const index = cartItems.products.findIndex((item) => item.id === productId);
+    cartTotal -= cartItems.products[index].price * cartItems.products[index].quantity;
+    delete cartItems.products[index];
 
-    setCart({ ...cart, items: cartItems, total: cartTotal });
+    setCart({ ...cart, cart: cartItems, total: cartTotal });
   }
 
   function emptyCart() {
     cartService.emptyCart();
     setCart({
-      items: [],
+      cart: {
+        products: []
+      },
       total: 0,
     });
   }

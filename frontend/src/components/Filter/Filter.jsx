@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
-import useProducts from '../hooks/useProducts';
+import useProducts from '../../hooks/useProducts';
+import './Filter.css'
 
 export default function Filter() {
   const { filter, reset } = useProducts();
@@ -16,43 +17,44 @@ export default function Filter() {
   });
 
   return (
-    <div className="card mx-auto my-4 p-4" style={{ maxWidth: '400px' }}>
       <form onSubmit={formik.handleSubmit}>
-        <p>
-          Név:{' '}
-          <input
+        <div className='input-group'>
+          <input className='form-control'
             type="text"
             id="title"
             name="title"
+            placeholder='Név'
             onChange={formik.handleChange}
             value={formik.values.title}
           />
-        </p>
-        <p>
-          Minimum ár:{' '}
-          <input
+        </div>
+        <div className='input-group'>
+          <input className='form-control'
             type="number"
             id="minPrice"
             name="minPrice"
+            placeholder='Minimum ár'
             onChange={formik.handleChange}
             value={formik.values.minPrice}
           />
-        </p>
-        <p>
-          Maximum ár:{' '}
-          <input
+        </div>
+        <div className='input-group'>
+          <input className='form-control'
             type="number"
             id="maxPrice"
             name="maxPrice"
+            placeholder='Maximum ár'
             onChange={formik.handleChange}
             value={formik.values.maxPrice}
           />
-        </p>
+        </div>
         <button type="submit">Szűrés</button>
-        <button type="button" onClick={reset}>
+        <button type="button" onClick={() => {
+          reset();
+          formik.handleReset();
+        }}>
           Szűrők törlése
         </button>
       </form>
-    </div>
   );
 }

@@ -3,7 +3,7 @@ import useProducts from '../../hooks/useProducts';
 import Table from 'react-bootstrap/Table';
 import { useNavigate } from 'react-router-dom';
 import productsService from '../../services/products-service';
-import Filter from '../../components/Filter';
+import Filter from '../../components/Filter/Filter';
 
 export default function AdminProductList() {
   const navigate = useNavigate();
@@ -19,7 +19,9 @@ export default function AdminProductList() {
 
   return (
     <>
-      <Filter />
+      <div className="card mx-auto my-4 p-4" style={{ maxWidth: '400px', maxHeight: '220px' }}>
+        <Filter />
+      </div>
       <Table responsive className="w-70 mx-auto">
         <thead className="font-weight-bold text-large border-bottom">
           <tr>

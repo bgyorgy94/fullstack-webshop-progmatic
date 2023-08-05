@@ -1,5 +1,5 @@
 import nanoid from 'nanoid';
-import Users from '../database/models/users-model';
+import Users from '../database/connection';
 
 export default {
   async find(id) {
@@ -19,7 +19,7 @@ export default {
   },
 
   async getAll(limit, offset) {
-    const users = await Users.findAll({
+    const users = await Users.getAll({
       limit: parseInt(limit || 10, 10),
       offset: parseInt(offset || 0, 10),
     });

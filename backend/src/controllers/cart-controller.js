@@ -26,7 +26,7 @@ export default {
     const userId = req.user.id;
     const productId = req.params.id;
     try {
-      const deletedProduct = await cartsService.delete({ productId, userId });
+      const deletedProduct = await cartsService.updateOrDelete(userId, productId);
       res.send(deletedProduct);
     } catch (err) {
       next(err);
@@ -36,7 +36,8 @@ export default {
   remove(req, res, next) {
     const userId = req.user.id;
     const productId = req.params.id;
-    cartsService.remove({ productId, userId }).then((removedItem) => res.send(removedItem));
+    cartsService.deleteProduct(userId, productId).then((removedItem) => res.send(removedItem))
+    .catch(next);
   },
 
   async deleteAll(req, res, next) {

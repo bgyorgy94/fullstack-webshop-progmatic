@@ -63,9 +63,30 @@ export default {
     return updatedCartItem.toJSON();
   },
 
-  async delete(userId, productId) {
-    await Carts.destroy({ where: { userId, productId } });
+  async updateOrDelete(userId, productId) {
+    const cart = await Carts.findOne({ where: { userId }, include: [{
+      model: Products, 
+      as: 'products',
+      where: {id: productId}
+    }]});
+    if (!cart) {
+      return {message: 'Product has been already deleted'}
+    }
+    cart.products[0].CartProducts.quantity -= 1;
+    if (cart.products[0].CartProducts.quantity <= 0) {
+      await cart.products[0].CartProducts.destroy()
+    }
+    await cart.products[0].CartProducts.save()
     return { userId, productId };
+  },
+
+  async deleteProduct(userId, productId) {
+    await Carts.destroy({ where: { userId }, include: [{
+      model: Products, 
+      as: 'products',
+      where: {id: productId}
+    }]});
+    return {message: 'Successfully deleted'};
   },
 
   async deleteAll(userId) {
