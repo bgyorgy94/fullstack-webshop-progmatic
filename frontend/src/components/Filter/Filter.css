@@ -1,0 +1,9 @@
+.input-group {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border-radius: 0% !important;
+    box-shadow: none !important;
+}

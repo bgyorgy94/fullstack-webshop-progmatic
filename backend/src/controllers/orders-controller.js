@@ -1,12 +1,12 @@
 import ordersService from '../services/orders-service';
-import cartService from '../services/cart-service';
 
 export default {
   async findAll(req, res, next) {
     const userId = req.user.id;
+    const { limit, offset, productName } = req.query;
 
     try {
-      const orders = await ordersService.getAllOrdersInfo(userId);
+      const orders = await ordersService.getAll(userId, limit, offset, productName);
       res.send({ orders });
       console.log('orders:', orders);
     } catch (err) {
@@ -14,24 +14,22 @@ export default {
     }
   },
 
-  // NOT IN USE
   async find(req, res, next) {
-    const userId = req.user.id;
+    const userId = req.user.isAdmin ? null : req.user.id;
     const { orderId } = req.params;
 
     try {
-      const order = await ordersService.find({ userId, orderId });
-      res.send(order);
+      const orderDetails = await ordersService.get(orderId, userId);
+      res.send(orderDetails);
     } catch (err) {
       next(err);
     }
   },
+
   async create(req, res, next) {
     const userId = req.user.id;
     try {
-      const order = await ordersService.create({ userId });
-      console.log(order);
-      await cartService.deleteAll({ userId });
+      const order = await ordersService.create(userId);
       res.status(201).send(order);
     } catch (err) {
       next(err);
@@ -43,18 +41,6 @@ export default {
     try {
       const order = await ordersService.delete({ userId, orderId });
       res.status(200).send(order);
-    } catch (err) {
-      next(err);
-    }
-  },
-
-  async getOrderDetails(req, res, next) {
-    const userId = req.user.isAdmin ? null : req.user.id;
-    const { orderId } = req.params;
-
-    try {
-      const orderDetails = await ordersService.getOrderDetails(orderId, userId);
-      res.send(orderDetails);
     } catch (err) {
       next(err);
     }

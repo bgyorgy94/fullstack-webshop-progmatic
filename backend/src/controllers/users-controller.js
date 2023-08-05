@@ -48,8 +48,9 @@ export default {
 
   async getAll(req, res, next) {
     if (req.user.isAdmin === 1) {
+      const { limit, offset } = req.query;
       try {
-        const users = await usersService.getAll();
+        const users = await usersService.getAll(limit, offset);
         res.send(users);
       } catch (err) {
         next(err);

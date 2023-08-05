@@ -1,24 +1,28 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import HttpError from '../utils/httpError';
-import usersModel from '../database/models/users-model';
+import { Users } from '../database/connection';
 import { JWT_SECRET_KEY } from '../constants';
 
 export default {
-  register({ email, password }) {
+  async register({ email, password }) {
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(password, salt);
 
-    return usersModel.create({ email, passwordHash });
+    const user = await Users.create({ email, passwordHash });
+    return user.toJSON();
   },
 
-  login({ email, password }) {
-    return usersModel.getByEmail(email).then((userPWHash) => {
-      const { passwordHash, ...user } = userPWHash;
-      const isValidPassword = bcrypt.compareSync(password, passwordHash);
-      if (!isValidPassword) throw new HttpError('Invalid email or password', 400);
-      const token = jwt.sign(user, JWT_SECRET_KEY, { expiresIn: '24h' });
-      return { accessToken: token };
-    });
+  async login({ email, password }) {
+    const user = await Users.findOne({ where: { email } });
+    if (!user) {
+      throw new HttpError('Invalid email or password', 400);
+    }
+    const isValidPassword = bcrypt.compareSync(password, user.passwordHash);
+    if (!isValidPassword) {
+      throw new HttpError('Invalid email or password', 400);
+    }
+    const token = jwt.sign(user.toJSON(), JWT_SECRET_KEY, { expiresIn: '24h' });
+    return { accessToken: token };
   },
 };

@@ -1,19 +1,19 @@
-import categoriesModel from '../database/models/categories-model';
+import { Categories } from '../database/connection';
 
 export default {
   create(name) {
-    return categoriesModel.create({ name });
+    return Categories.create({ name });
   },
   delete(id) {
-    return categoriesModel.delete(id);
+    return Categories.destroy({ where: { id } });
   },
   update(id, name) {
-    return categoriesModel.update(id, name);
+    return Categories.update({ name }, { where: { id } });
   },
   findAll() {
-    return categoriesModel.getAll();
+    return Categories.findAll();
   },
   findById(id) {
-    return categoriesModel.getById(id);
+    return Categories.findByPk(id);
   },
 };

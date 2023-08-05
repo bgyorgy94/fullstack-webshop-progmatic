@@ -19,12 +19,9 @@ export default function Cart() {
           <Container fluid="true">
             <h4>Termékek a kosárban</h4>
             <hr />
-            {cart.items.map((product) => {
+            {cart.cart.products.map((product) => {
               return (
-                <Row className="align-items-md-center margin-top">
-                  <Col>
-                    <img src="https://placehold.co/100" />
-                  </Col>
+                <Row className="align-items-md-center margin-top products">
                   <Col>{product.title}</Col>
                   <Col>{product.price} Ft</Col>
                   <Col>
@@ -32,11 +29,11 @@ export default function Cart() {
                       -
                     </Button>{' '}
                     {product.quantity}{' '}
-                    <Button size="sm" variant="light" onClick={() => increase(product.id)}>
+                    <Button size="sm" variant="light" onClick={() => increase(product)}>
                       +
                     </Button>
                   </Col>
-                  <Col>{product.subtotal} Ft</Col>
+                  <Col>{product.quantity * product.price} Ft</Col>
                   <Col>
                     <CloseButton onClick={() => remove(product.id)} />
                   </Col>

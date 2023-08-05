@@ -1,11 +1,11 @@
-import cartService from '../services/cart-service';
+import cartsService from '../services/carts-service';
 
 export default {
   async add(req, res, next) {
     const { productId } = req.body;
     const userId = req.user.id;
     try {
-      const addedProduct = await cartService.add({ productId, userId });
+      const addedProduct = await cartsService.create(userId, productId);
       res.send(addedProduct);
     } catch (err) {
       next(err);
@@ -15,11 +15,8 @@ export default {
   async getAll(req, res, next) {
     const userId = req.user.id;
     try {
-      const cartItems = await cartService.getAll(userId);
-      res.send({
-        items: cartItems,
-        total: cartItems.map((item) => item.subtotal).reduce((acc, curr) => acc + curr, 0),
-      });
+      const cart = await cartsService.getAll(userId);
+      res.send(cart);
     } catch (err) {
       next(err);
     }
@@ -29,7 +26,7 @@ export default {
     const userId = req.user.id;
     const productId = req.params.id;
     try {
-      const deletedProduct = await cartService.delete({ productId, userId });
+      const deletedProduct = await cartsService.updateOrDelete(userId, productId);
       res.send(deletedProduct);
     } catch (err) {
       next(err);
@@ -39,13 +36,14 @@ export default {
   remove(req, res, next) {
     const userId = req.user.id;
     const productId = req.params.id;
-    cartService.remove({ productId, userId }).then((removedItem) => res.send(removedItem));
+    cartsService.deleteProduct(userId, productId).then((removedItem) => res.send(removedItem))
+    .catch(next);
   },
 
   async deleteAll(req, res, next) {
     const userId = req.user.id;
     try {
-      const deletedId = await cartService.deleteAll({ userId });
+      const deletedId = await cartsService.deleteAll({ userId });
       res.send(deletedId);
     } catch (error) {
       next(error);

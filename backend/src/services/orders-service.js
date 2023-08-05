@@ -1,66 +1,122 @@
-import ordersModel from '../database/models/orders-model';
-import cartService from './cart-service';
+import { Op } from 'sequelize';
+import { Orders, Categories, Carts, Products } from '../database/connection';
+import HttpError from '../utils/httpError';
 
 export default {
-  // NOT IN USE
-  async findAll(userId) {
-    const orders = await ordersModel.getAll(userId);
-    return orders;
-  },
-  // NOT IN USE
-  async find(userId, orderId) {
-    const order = await ordersModel.getById(userId, orderId);
-    return order;
+  async getAll(userId, limit, offset, productName) {
+    console.log('Backend Params:', { userId, limit, offset, productName });
+
+    const orders = await Orders.findAll({
+      where: { userId },
+      limit: parseInt(limit || 10, 10),
+      offset: parseInt(offset || 0, 10),
+      attributes: { exclude: ['UserId'] },
+      include: {
+        model: Products,
+        as: 'products',
+        where: productName ? { title: { [Op.like]: `%${productName}%` } } : null,
+        attributes: ['id', 'title'],
+        through: { attributes: ['quantity', 'price'] },
+        include: {
+          model: Categories,
+          as: 'categories',
+          attributes: ['id', 'name'],
+        },
+      },
+    });
+
+    return orders.map((order) => {
+      const orderProducts = order.toJSON().products;
+      const total = orderProducts.reduce((sum, item) => sum + item.OrderProducts.price, 0);
+
+      return {
+        ...order.toJSON(),
+        products: orderProducts.map((product) => {
+          const { OrderProducts, ...otherProductProps } = product;
+          return {
+            ...otherProductProps,
+            quantity: OrderProducts.quantity,
+            price: OrderProducts.price,
+          };
+        }),
+        total,
+      };
+    });
   },
 
-  async getAllOrdersInfo(userId) {
-    const orderInfo = await ordersModel.getAllOrdersInfo(userId);
-    return orderInfo;
-  },
+  async get(orderId, userId) {
+    const order = await Orders.findOne({
+      where: userId ? { id: orderId, userId } : { id: orderId },
+      attributes: { exclude: ['UserId'] },
+      include: {
+        model: Products,
+        as: 'products',
+        attributes: ['id', 'title'],
+        through: { attributes: ['quantity', 'price'] },
+        include: {
+          model: Categories,
+          as: 'categories',
+          attributes: ['id', 'name'],
+        },
+      },
+    });
 
-  async getOrderDetails(orderId, userId) {
-    let orderDetails;
-    let orderInfo;
-    if (userId) {
-      orderDetails = await ordersModel.getAllOrderDetailsByUserId({ orderId, userId });
-      orderInfo = await ordersModel.getOrderInfoByUserId(userId, orderId);
-    } else {
-      orderDetails = await ordersModel.getAllOrderDetails({ orderId });
-      orderInfo = await ordersModel.getOrderInfo(orderId);
-    }
+    console.log(userId);
+
+    if (!order) throw new HttpError('Order not found', 404);
+
+    const orderProducts = order.toJSON().products;
+    const total = orderProducts.reduce((sum, item) => sum + item.OrderProducts.price, 0);
 
     return {
-      ...orderInfo,
-      products: orderDetails,
+      ...order.toJSON(),
+      products: orderProducts.map((product) => {
+        const { OrderProducts, ...otherProductProps } = product;
+        return {
+          ...otherProductProps,
+          quantity: OrderProducts.quantity,
+          price: OrderProducts.price,
+        };
+      }),
+      total,
     };
   },
 
-  async getOrderDetailsByUserId(userId, orderId) {
-    const orderInfo = await ordersModel.getAllOrdersInfo({ userId });
-    const orderDetails = await ordersModel.getAllOrderDetails({ orderId });
+  async create(userId) {
+    console.log(userId);
+    const newOrder = await Orders.create({ userId });
 
-    return {
-      info: orderInfo,
-      details: orderDetails,
-    };
-  },
+    const cartProducts = await Carts.findOne({
+      where: { userId },
+      attributes: ['id'],
+      include: {
+        model: Products,
+        as: 'products',
+      },
+    });
 
-  async create({ userId }) {
-    const newOrder = await ordersModel.create(userId);
-    console.log('userid:', userId);
-    const cart = await cartService.getAll(userId);
-    console.log('cart:', cart);
+    const { products } = cartProducts.toJSON();
+
+    if (!products || products?.length === 0) throw new HttpError('Cart is empty', 400);
+
     await Promise.all(
-      cart.map((item) =>
-        ordersModel.createOrderProduct(newOrder.orderId, item.id, item.quantity, item.price),
+      products.map((product) =>
+        newOrder.addProduct(product.id, {
+          through: { quantity: product.CartProducts.quantity, price: product.price },
+        }),
       ),
     );
-    await cartService.deleteAll(userId);
-    return newOrder;
+
+    await Carts.destroy({ where: { id: cartProducts.id } });
+
+    return newOrder.toJSON();
   },
 
-  async delete(userId, orderId) {
-    const deletedOrder = await ordersModel.delete(userId, orderId);
+  async delete(orderId) {
+    const deletedOrder = await Orders.destroy({
+      where: { id: orderId },
+    });
+
     return deletedOrder;
   },
 };

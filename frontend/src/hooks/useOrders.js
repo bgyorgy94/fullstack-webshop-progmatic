@@ -35,7 +35,8 @@ export default function useOrders(orderId) {
     }
   }, [orderId]);
 
-  // createOrder
+  // createOrder -> cart
+  // updateOrder
   // deleteOrder
 
   return {

@@ -1,19 +1,25 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Categories from './pages/Categories';
 import Category from './components/Category';
-import RegisterUser from './pages/RegisterUser';
+import RegisterUser from './pages/LoginRegister/RegisterUser';
 import Home from './pages/Home';
 import './App.scss';
-import Login from './pages/Login';
+import Login from './pages/LoginRegister/Login';
 import UserList from './pages/UserList';
 import Admin from './pages/Admin';
 import { CartProvider } from './contexts/CartContext';
 import Cart from './pages/Cart/Cart';
-// import AdminOrders from './pages/AdminOrders';
+// import AdminOrderList from './pages/AdminOrderList';
 // import AdminOrder from './components/AdminOrder';
 import UserOrders from './pages/UserOrders';
 import UserOrder from './components/UserOrder';
 import { UserProvider } from './contexts/UserContext';
+import { LoginModalProvider } from './contexts/LoginModalContext';
+import { RegisterModalProvider } from './contexts/RegisterModalContext';
+import AdminProductList from './pages/AdminProductList/AdminProductList';
+import AdminAddProduct from './pages/AdminAddProduct/AdminAddProduct';
+import AdminModifyProduct from './pages/AdminModifyProduct/AdminModifyProduct';
+import ProductList from './pages/ProductList/ProductList';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +44,10 @@ const router = createBrowserRouter([
     children: [{ path: ':categoryId', element: <Category /> }],
   },
   {
+    path: '/products',
+    element: <ProductList />
+  },
+  {
     path: '/admin',
     element: <Admin />,
     children: [
@@ -45,11 +55,27 @@ const router = createBrowserRouter([
         path: '/admin/users',
         element: <UserList />,
       },
-      /* {
+      {
+        path: '/admin/products',
+        element: <AdminProductList />,
+      },
+      {
+        path: '/admin/addProduct',
+        element: <AdminAddProduct />,
+      },
+      {
+        path: '/admin/products/:id/modify',
+        element: <AdminModifyProduct />,
+      },
+      /*
+      {
         path: '/admin/orders',
-        element: <AdminOrders />,
-        children: [{ path: ':orderId', element: <AdminOrder /> }],
-      }, */
+        element:  <AdminOrderList /> 
+        children: [
+          { path: ':orderId', element: <AdminOrder /> }
+        ],
+      },
+      */
     ],
   },
   {
@@ -65,7 +91,11 @@ function App() {
   return (
     <UserProvider>
       <CartProvider>
-        <RouterProvider router={router} />
+        <LoginModalProvider>
+          <RegisterModalProvider>
+            <RouterProvider router={router} />
+          </RegisterModalProvider>
+        </LoginModalProvider>
       </CartProvider>
     </UserProvider>
   );
