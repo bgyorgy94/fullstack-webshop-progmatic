@@ -1,21 +1,25 @@
 import { Container, Row, Col } from 'react-bootstrap';
+import './Footer.scss';
 
 export default function Footer() {
   return (
     <footer className="footer">
       <Container>
-        <Row>
+        <Row className="align-items-center">
           <Col className="text-center py-3">
-            <a href="#">FAQs</a>
+            <a className="footer-link" href="#">
+              FAQs
+            </a>
           </Col>
           <Col className="text-center py-3">
-            <a href="#">Contact Us</a>
+            <a className="footer-link" href="#">
+              Contact Us
+            </a>
           </Col>
           <Col className="text-center py-3">
-            <a href="#">Terms & Conditions</a>
-          </Col>
-          <Col className="text-center py-3">
-            <a href="#">Privacy Policy</a>
+            <a className="footer-link" href="#">
+              Privacy Policy
+            </a>
           </Col>
         </Row>
       </Container>

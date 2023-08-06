@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaArrowCircleUp } from 'react-icons/fa';
+import { BsArrowUpShort } from 'react-icons/bs';
 import './ScrollTop.css';
 
 export default function ScrollTop() {
@@ -7,9 +7,9 @@ export default function ScrollTop() {
 
   const toggleVisible = () => {
     const scrolled = document.documentElement.scrollTop;
-    if (scrolled > 300) {
+    if (scrolled > 1000) {
       setVisible(true);
-    } else if (scrolled <= 300) {
+    } else if (scrolled <= 1000) {
       setVisible(false);
     }
   };
@@ -28,12 +28,12 @@ export default function ScrollTop() {
 
   return (
     <div className="scroll-to-top">
-      <FaArrowCircleUp
+      <BsArrowUpShort
         onClick={scrollToTop}
         style={{ display: visible ? 'inline' : 'none' }}
         className="scroll-top-arrow"
       />
-      <p style={{ display: visible ? 'inline' : 'none' }}>Back to Top</p>
+      <p style={{ display: visible ? 'inline' : 'none' }}>back to the top</p>
     </div>
   );
 }

@@ -1,9 +1,8 @@
 .hero-section {
-  /* background-image: url(''); */
+  background-image: url('src/assets/BG.jpg');
   background-color: rgb(191, 244, 244);
   background-size: cover;
   background-position: center;
-  width: 80%;
   height: 100vh;
   position: relative;
   margin: 0 auto;
@@ -11,7 +10,7 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  padding-bottom: 20vh;
+  padding-bottom: 10vh;
 }
 
 .shop-buttons {

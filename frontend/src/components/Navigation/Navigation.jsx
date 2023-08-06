@@ -1,7 +1,6 @@
 import { Image, Container, Dropdown, Nav, Navbar } from 'react-bootstrap';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../../contexts/UserContext';
-import { FaUser } from 'react-icons/fa';
 import AuthModal from '../AuthModal/AuthModal';
 import useLogin from '../../hooks/useLogin';
 import './Navigation.scss';
@@ -17,12 +16,18 @@ export default function Navigation() {
     women: ['Dresses', 'Jeans', 'Shirts'],
   };
 
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
-    <div onMouseLeave={() => setActiveMenu('')}>
+    <div
+      style={{ position: 'fixed', top: 0, zIndex: 1000, width: '100%' }}
+      onMouseLeave={() => setActiveMenu('')}
+    >
       <Navbar
-        sticky="top"
         bg="light"
-        className={!activeMenu ? 'navbar' : 'navbar no-border'}
+        className={!activeMenu ? 'navbar no-padding' : 'navbar no-border no-padding'}
         expand="lg"
       >
         <Container fluid className="d-flex flex-wrap">
@@ -57,24 +62,23 @@ export default function Navigation() {
           </Navbar.Collapse>
           <Navbar.Collapse className="order-3 order-lg-4">
             <Container className="d-flex justify-content-lg-end justify-content-center no-padding align-items-center text-center">
-              <button
-                type="button"
-                className="btn-loginModal me-2"
-                onClick={() => setShowAuthModal(true)}
-              >
-                <FaUser />
-              </button>
-              {user ? (
+              {user.id ? (
                 <>
                   <p style={{ color: 'black' }} className="no-margin">
                     Hi, {user.email}!
-                  </p>{' '}
-                  <button type="button" className="btn-logout ms-2" onClick={() => logout()}>
+                  </p>
+                  <button type="button" className="btn-loginModal ms-2" onClick={() => logout()}>
                     Logout
                   </button>
                 </>
               ) : (
-                ''
+                <button
+                  type="button"
+                  className="btn-loginModal ms-2"
+                  onClick={() => setShowAuthModal(true)}
+                >
+                  Login
+                </button>
               )}
 
               <AuthModal show={showAuthModal} handleClose={() => setShowAuthModal(false)} />
@@ -83,7 +87,10 @@ export default function Navigation() {
         </Container>
       </Navbar>
       <div className={`menu-wrapper bg-light ${activeMenu ? 'show' : ''}`}>
-        <Dropdown.Menu className="border-top-0 border-bot-1 bg-light text-dark" show={!!activeMenu}>
+        <Dropdown.Menu
+          className="border-top-0 border-bot-1 bg-light text-dark nav-dropdown"
+          show={!!activeMenu}
+        >
           {menus[activeMenu]?.map((item) => (
             <Dropdown.Item key={item}>{item}</Dropdown.Item>
           ))}

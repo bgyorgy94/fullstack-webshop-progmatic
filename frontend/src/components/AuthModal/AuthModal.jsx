@@ -9,17 +9,18 @@ export default function AuthModal({ show, handleClose }) {
     email: '',
     password: '',
   });
-  const [message, setMessage] = useState('');
   const { login } = useLogin();
 
   const handleLogin = (e) => {
     e.preventDefault();
     login(formData);
+    handleClose();
   };
 
   const handleRegister = (e) => {
     e.preventDefault();
-    userService.register(formData).then((resp) => setMessage(resp.data.message));
+    userService.register(formData);
+    handleClose();
   };
 
   const toggleForm = () => {
@@ -58,9 +59,15 @@ export default function AuthModal({ show, handleClose }) {
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             />
           </div>
-          <button type="submit" className="btn btn-primary">
-            {isLogin ? 'Login' : 'Register'}
-          </button>
+          {isLogin ? (
+            <button type="submit" className="btn btn-primary">
+              Login
+            </button>
+          ) : (
+            <button type="submit" className="btn btn-primary">
+              Register
+            </button>
+          )}
         </form>
       </Modal.Body>
       <Modal.Footer>
