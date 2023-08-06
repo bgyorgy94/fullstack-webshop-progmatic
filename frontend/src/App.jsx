@@ -1,14 +1,14 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Categories from './pages/Categories';
-import Category from './components/Category';
 import RegisterUser from './pages/LoginRegister/RegisterUser';
 import Home from './pages/Home';
 import './App.scss';
 import Login from './pages/LoginRegister/Login';
 import UserList from './pages/UserList';
-import Admin from './pages/Admin';
+import Admin from './pages/Admin/Admin';
 import { CartProvider } from './contexts/CartContext';
 import Cart from './pages/Cart/Cart';
+import Layout from './components/Layout';
+import AdminLayout from './components/AdminLayout';
 // import AdminOrderList from './pages/AdminOrderList';
 // import AdminOrder from './components/AdminOrder';
 import UserOrders from './pages/UserOrders';
@@ -24,33 +24,33 @@ import ProductList from './pages/ProductList/ProductList';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: <Layout />,
+    children: [
+      { path: '/', element: <Home /> },
+      {
+        path: '/register',
+        element: <RegisterUser />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
+      {
+        path: '/cart',
+        element: <Cart />,
+      },
+      {
+        path: '/products',
+        element: <ProductList />,
+      },
+    ],
   },
-  {
-    path: '/register',
-    element: <RegisterUser />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/cart',
-    element: <Cart />,
-  },
-  {
-    path: '/categories',
-    element: <Categories />,
-    children: [{ path: ':categoryId', element: <Category /> }],
-  },
-  {
-    path: '/products',
-    element: <ProductList />
-  },
+
   {
     path: '/admin',
-    element: <Admin />,
+    element: <AdminLayout />,
     children: [
+      { path: '/admin', element: <Admin /> },
       {
         path: '/admin/users',
         element: <UserList />,

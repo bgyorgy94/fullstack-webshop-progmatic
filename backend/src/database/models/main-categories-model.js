@@ -1,8 +1,8 @@
 import Sequelize from 'sequelize';
 
-const CategoriesModel = (sequelize) => {
-  const Categories = sequelize.define(
-    'Categories',
+const MainCategoriesModel = (sequelize) => {
+  const MainCategories = sequelize.define(
+    'MainCategories',
     {
       name: {
         type: Sequelize.TEXT,
@@ -14,7 +14,7 @@ const CategoriesModel = (sequelize) => {
       underscored: true,
     },
   );
-  return Categories;
+  return MainCategories;
 };
 
-export default CategoriesModel;
+export default MainCategoriesModel;

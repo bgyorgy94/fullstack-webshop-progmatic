@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
-import Categories from './categories-model';
+import MainCategories from './main-categories-model';
+import SubCategories from './sub-categories-model';
 
 const ProductsModel = (sequelize) => {
   const Products = sequelize.define(
@@ -9,10 +10,17 @@ const ProductsModel = (sequelize) => {
       price: Sequelize.DECIMAL,
       description: Sequelize.TEXT,
       imagePath: Sequelize.STRING,
-      categoryId: {
+      mainCategoryId: {
         type: Sequelize.INTEGER,
         references: {
-          model: Categories,
+          model: MainCategories,
+          key: 'id',
+        },
+      },
+      subCategoryId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: SubCategories,
           key: 'id',
         },
       },

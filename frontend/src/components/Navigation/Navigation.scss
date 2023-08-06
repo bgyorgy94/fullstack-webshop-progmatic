@@ -1,0 +1,48 @@
+.btn-loginModal {
+  background-color: transparent;
+  border: none;
+}
+
+.btn-loginModal:hover {
+  color: rgb(0, 0, 0, 0.6);
+}
+
+.login-container {
+  display: flex;
+
+  justify-content: flex-end;
+}
+
+.login-container p {
+  margin-bottom: 0;
+}
+
+.menu-wrapper {
+  display: block;
+  position: absolute;
+  height: 20rem;
+  width: 100dvw;
+  transform: translateY(-20em);
+  transition: transform 0.5s ease;
+  z-index: 1;
+
+  & > .dropdown-menu {
+    display: block;
+    height: 20rem;
+    padding-left: 1.5rem;
+    width: 100dvw;
+    opacity: 0;
+    transition: opacity 0.1s cubic-bezier(1, 0.18, 1, 0.94) 0.4s;
+  }
+
+  &.show {
+    transform: translateY(0);
+    & > .dropdown-menu {
+      opacity: 1;
+    }
+  }
+}
+
+.navbar {
+  z-index: 100000;
+}

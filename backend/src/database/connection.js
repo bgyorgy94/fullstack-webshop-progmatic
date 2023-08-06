@@ -1,7 +1,8 @@
 import Sequelize from 'sequelize';
 import UsersModel from './models/users-model';
 import ProductsModel from './models/products-model';
-import CategoriesModel from './models/categories-model';
+import MainCategoriesModel from './models/main-categories-model';
+import SubCategoriesModel from './models/sub-categories-model';
 import OrdersModel from './models/orders-model';
 import OrderProductsModel from './models/orderproducts-model';
 import CartsModel from './models/carts-model';
@@ -15,7 +16,8 @@ const sequelize = new Sequelize({
 
 const Users = UsersModel(sequelize, Sequelize);
 const Products = ProductsModel(sequelize, Sequelize);
-const Categories = CategoriesModel(sequelize, Sequelize);
+const MainCategories = MainCategoriesModel(sequelize, Sequelize);
+const SubCategories = SubCategoriesModel(sequelize, Sequelize);
 const Carts = CartsModel(sequelize, Sequelize);
 const Orders = OrdersModel(sequelize, Sequelize);
 const OrderProducts = OrderProductsModel(sequelize, Sequelize);
@@ -30,8 +32,11 @@ Orders.belongsTo(Users);
 Products.belongsToMany(Orders, { through: OrderProducts });
 Orders.belongsToMany(Products, { as: 'products', through: OrderProducts });
 
-Products.belongsTo(Categories, { as: 'categories', foreignKey: 'categoryId' });
-Categories.hasMany(Products, { as: 'products' });
+MainCategories.hasMany(SubCategories, { as: 'subCategories', foreignKey: 'mainCategoryId' });
+SubCategories.belongsTo(MainCategories, { as: 'mainCategory', foreignKey: 'mainCategoryId' });
+
+SubCategories.hasMany(Products, { as: 'products' });
+Products.belongsTo(SubCategories, { as: 'subCategory', foreignKey: 'subCategoryId' });
 
 Products.belongsToMany(Carts, {
   through: CartProducts,
@@ -44,4 +49,14 @@ Carts.belongsToMany(Products, {
 
 sequelize.sync();
 
-export { sequelize, Users, Products, Categories, Carts, Orders, OrderProducts, CartProducts };
+export {
+  sequelize,
+  Users,
+  Products,
+  MainCategories,
+  SubCategories,
+  Carts,
+  Orders,
+  OrderProducts,
+  CartProducts,
+};

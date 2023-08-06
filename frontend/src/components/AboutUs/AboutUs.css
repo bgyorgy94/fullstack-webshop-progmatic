@@ -1,0 +1,28 @@
+.about-us-section {
+  text-align: center;
+  padding: 10rem 0;
+  margin: auto;
+}
+
+.about-us-section h2 {
+  font-weight: bold;
+  color: #d08a1a;
+  margin-bottom: 2rem;
+}
+
+.about-us-section p {
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.row {
+  width: 50%;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}

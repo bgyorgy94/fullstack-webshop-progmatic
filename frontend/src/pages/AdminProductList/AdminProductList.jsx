@@ -26,7 +26,7 @@ export default function AdminProductList() {
         <thead className="font-weight-bold text-large border-bottom">
           <tr>
             <th onClick={() => order('title')}>
-              Termék neve
+              Name
               <span className="sort-arrow" />
               {searchParams.get('orderBy') === 'title'
                 ? searchParams.get('order') === 'ASC'
@@ -35,7 +35,7 @@ export default function AdminProductList() {
                 : '\u00A0'}
             </th>
             <th onClick={() => order('price')}>
-              Termék ára
+              Price
               <span className="sort-arrow" />
               {searchParams.get('orderBy') === 'price'
                 ? searchParams.get('order') === 'ASC'
@@ -53,7 +53,7 @@ export default function AdminProductList() {
               <td>{product.title}</td>
               <td>{product.price}</td>
               <td className="px-1">
-                <button onClick={() => navigate(`${product.id}/modify`)}>Módosítás</button>
+                <button onClick={() => navigate(`${product.id}/modify`)}>Edit</button>
               </td>
               <td className="px-1">
                 <button
@@ -62,7 +62,7 @@ export default function AdminProductList() {
                     setUpdate(true);
                   }}
                 >
-                  Törlés
+                  Delete
                 </button>
               </td>
             </tr>

@@ -1,0 +1,34 @@
+.scroll-to-top {
+  position: fixed;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease-out;
+  opacity: 0.5;
+}
+
+.scroll-to-top:hover {
+  opacity: 1;
+  animation: updown 1s ease-in-out infinite;
+}
+
+@keyframes updown {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.scroll-top-arrow {
+  font-size: 2rem;
+}

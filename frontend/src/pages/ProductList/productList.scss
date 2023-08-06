@@ -1,93 +1,95 @@
 @import '../../App.scss';
-
+.main {
+  margin-top: 10rem;
+}
 .card {
-    border-radius: 0% !important;
+  border-radius: 0% !important;
 }
 
 .card-img-top {
-    aspect-ratio: 1/1;
-    object-fit: cover;
-    border-radius: 0% !important;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 0% !important;
 }
 
 .card-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 2px;
-    padding-top: .5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2px;
+  padding-top: 0.5rem;
 }
 
 .card-text {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .card-title {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .card-subtitle {
-    position: absolute;
-    bottom: 3.4rem
+  position: absolute;
+  bottom: 3.4rem;
 }
 
 .btn-container {
-    text-align: center;
+  text-align: center;
 }
 
 .card-btn {
-    position: absolute;
-    bottom: .7rem;
-    left: 50%;
-    transform: translateX(-50%)  ;
+  position: absolute;
+  bottom: 0.7rem;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .productLink {
-    text-decoration: none;
-    color: var(--bs-card-title-color);
+  text-decoration: none;
+  color: var(--bs-card-title-color);
 }
 
 @include media-breakpoint-down(md) {
-    .card-subtitle {
-        position: revert;
-        bottom: revert;
-    }
-    .card-btn {
-        position: revert;
-        left: revert;
-        transform: revert; 
-    }
+  .card-subtitle {
+    position: revert;
+    bottom: revert;
+  }
+  .card-btn {
+    position: revert;
+    left: revert;
+    transform: revert;
+  }
 }
 
 @include media-breakpoint-up(md) {
-    .card {
-        height: 22rem !important;
-    };
-    .card-text {
-        height: 70%
-    };
-    .card-title {
-        font-size: 1.1rem;
-    };
-    .card-subtitle {
-        font-size: .9rem;
-    }
+  .card {
+    height: 22rem !important;
+  }
+  .card-text {
+    height: 70%;
+  }
+  .card-title {
+    font-size: 1.1rem;
+  }
+  .card-subtitle {
+    font-size: 0.9rem;
+  }
 }
 
 @include media-breakpoint-up(lg) {
-    .card {
-        height: 24rem !important;;
-    }
+  .card {
+    height: 24rem !important;
+  }
 }
 
 @include media-breakpoint-up(xl) {
-    .card {
-        height: 26rem !important;
-    }
+  .card {
+    height: 26rem !important;
+  }
 }
 
 @include media-breakpoint-up(xxl) {
-    .card {
-        height: 29rem !important;;
-    }
+  .card {
+    height: 29rem !important;
+  }
 }

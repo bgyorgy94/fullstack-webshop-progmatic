@@ -1,10 +1,10 @@
-import categoriesService from '../services/categories-service';
+import mainCategoriesService from '../services/main-categories-service';
 
 export default {
   async create(req, res, next) {
     const { name } = req.body;
     try {
-      const category = await categoriesService.create(name);
+      const category = await mainCategoriesService.create(name);
       res.status(201).send(category);
     } catch (error) {
       next(error);
@@ -13,7 +13,7 @@ export default {
   async delete(req, res, next) {
     const { id } = req.params;
     try {
-      await categoriesService.delete(id);
+      await mainCategoriesService.delete(id);
       res.status(204).send();
     } catch (error) {
       next(error);
@@ -23,7 +23,7 @@ export default {
     const { id } = req.params;
     const { name } = req.body;
     try {
-      const category = await categoriesService.update(id, name);
+      const category = await mainCategoriesService.update(id, name);
       res.status(201).send(category);
     } catch (error) {
       next(error);
@@ -31,7 +31,7 @@ export default {
   },
   async findAll(req, res, next) {
     try {
-      const categories = await categoriesService.findAll();
+      const categories = await mainCategoriesService.findAll();
       res.send(categories);
     } catch (error) {
       next(error);
@@ -40,7 +40,7 @@ export default {
   async findById(req, res, next) {
     const { id } = req.params;
     try {
-      const category = await categoriesService.findById(id);
+      const category = await mainCategoriesService.findById(id);
       res.status(200).send(category);
     } catch (error) {
       next(error);
