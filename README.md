@@ -1,13 +1,29 @@
-## express backend és swc vite react template
+# About the project
 
-## használat
+This project is a simple webshop for clothes. It was made during the **2022/23 Junior Fullstack Developer** course of Progmatic Academy in a 4 people team plus the product owner. However, due to personal and work related problems, it was mainly developed by 2 people, including myself. </br></br>
+There is a separate user and admin interface. On the user interface, the user can view the products, put them in the cart and order them after logging in. Sorting and filtering are available by name, minimum price, maximum price and category. The user can view their cart and their order history.</br></br>
+The admin features are only available with admin authorization. The admin can add products to the product list (setting the name, price, description, category and picture of the product), modify products and delete products. They can also view the list of users (without passwords) and the order history of all users.</br></br>
+In this project, besides the frontend we also developed the backend of the webshop, including the database.
 
-- Add ki a backend **és**  frontend mappában külön külön az `npm install` parancsot.
-- Célszerű külön-külön vscode ablakba(workspace) megnyitni a frontend és backend mappát.
-- **linter haszálnata**:
-  - A linter a kód minőségét/külalakját figyeli (behúzások, var használata, pontosvessző stb.)
-  -  `npm run lint` megkeresi a hibát és kiírja őket.
-  - `npm run lint:fix` megkeresi a hibákat és amit tud azt megpróbálja megjavítani.
+## Development team
 
-### backend indítása [itt](./backend/README.md).
-### frontend indítása [itt](./frontend/README.md).
+**Product owner:** Bence Simon </br>
+
+**Developers:** 
+- Attila Aszódi
+- György Bognár
+- Emese Reisch
+- Lajos Vadnai
+
+## Programming languages
+The project is written in Javascript, HTML, CSS and SQL.
+
+## Technology
+- The webshop is made using **Vite** with **React**. </br>
+- Backend is made by the project team, using **Express**, **SQLite** and **Sequelize**.</br>
+- We used **Bootstrap** and **SCSS** to create the look of the website.
+
+## Development process
+We used the **Scrum** management framework, including daily stand-ups, sprints and weekly retrospectives. We had a demonstration at the end of the project, where we presented the final product.</br></br>
+**Github** was used as a code repository during the project. We used different branches for different parts of the code and reviewed each other's pull requests to make sure there aren't any conflicts between each other's written code. </br></br>
+For keeping track of each other's work and progress, we used **Trello**. 
